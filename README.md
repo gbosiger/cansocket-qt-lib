@@ -29,7 +29,7 @@ Can-utils (https://github.com/linux-can/can-utils) can also be then used for tes
 ```
 candump -e  any,0:0,#FFFFFFFF
 ```
-or for generating new ones once the example is executed. They will be received in nonblocking mode, by the example application (filtering should be removed from example):
+or for generating new ones once the example is executed. They will be received in nonblocking mode, by the example application (filtering should be removed from the example first):
 ```
 cangen -v vcan0
 ```
