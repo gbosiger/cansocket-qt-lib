@@ -25,16 +25,15 @@ sudo modprobe vcan
 sudo ip link add dev vcan0 type vcan
 sudo ip link set up vcan0
 ```
-Once the example is executed, can-utils can be used for dumping framesto the terminal:
+Can-utils (https://github.com/linux-can/can-utils) can also be then used for testing. Fore example dumping (loopback) frames to the terminal:
 ```
 candump -e  any,0:0,#FFFFFFFF
 ```
-or for generating new ones, that will be received in nonblocking mode, by the example application:
+or for generating new ones once the example is executed. They will be received in nonblocking mode, by the example application:
 ```
 cangen -v vcan0
 ```
 
-In this example an local loopback, receiving of own and error messages are enabled. Filter is setup to receive only data frames with id of 0x1ab. 
 
 Code snippet of the example for demonstaration:
 ```
