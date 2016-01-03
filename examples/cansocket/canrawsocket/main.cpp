@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     QCoreApplication coreApplication(argc, argv);
 
     QString interfaceName = "vcan0";
-    char dataToSend[] = "\x11\x22\x33\x44\x55\xAA\xFF";
+    char dataToSend[] = "\x11\x22\x33\x44\x55\xAA\xBB\xCC";
 
     CanRawSocket *canRawSocket = new CanRawSocket(&coreApplication);
     new CanRawReader(canRawSocket, &coreApplication);

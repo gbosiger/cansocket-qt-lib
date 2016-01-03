@@ -8,7 +8,7 @@ LIBS += -L$$PWD/../../../lib/ -lCanSocket
 CONFIG += console
 CONFIG -= app_bundle
 
-TARGET = datasteam
+TARGET = canrawsocket
 TEMPLATE = app
 
 SOURCES += main.cpp \
