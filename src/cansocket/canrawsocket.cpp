@@ -172,6 +172,55 @@ QVariant CanRawSocket::socketOption(CanRawSocket::CanRawSocketOption option)
     return d->socketOption(option);
 }
 
+void CanRawSocket::setCanFilter(const CanRawFilterArray &filter)
+{
+    setSocketOption(CanFilterOption, QVariant::fromValue(filter));
+}
+
+CanRawFilterArray CanRawSocket::canFilter()
+{
+    return socketOption(CanFilterOption).value<CanRawFilterArray>();
+}
+
+void CanRawSocket::setErrorFilterMask(const CanFrameErrors mask)
+{
+    setSocketOption(CanRawSocket::ErrorFilterMaskOption, QVariant::fromValue(mask));
+}
+
+CanFrameErrors CanRawSocket::errorFilterMask()
+{
+    return socketOption(CanRawSocket::ErrorFilterMaskOption).value<CanFrameErrors>();
+}
+
+void CanRawSocket::setLoopback(Loopback loopback)
+{
+    setSocketOption(CanRawSocket::LoopbackOption, QVariant::fromValue(loopback));
+}
+
+CanRawSocket::Loopback CanRawSocket::loopback()
+{
+    return socketOption(CanRawSocket::LoopbackOption).value<CanRawSocket::Loopback>();
+}
+
+void CanRawSocket::setReceiveOwnMessages(ReceiveOwnMessages ownMessages)
+{
+    return setSocketOption(CanRawSocket::ReceiveOwnMessagesOption, QVariant::fromValue(ownMessages));
+}
+
+CanRawSocket::ReceiveOwnMessages CanRawSocket::receiveOwnMessages()
+{
+    return socketOption(CanRawSocket::ReceiveOwnMessagesOption).value<CanRawSocket::ReceiveOwnMessages>();
+}
+
+void CanRawSocket::setFlexibleDataRateFrames(CanRawSocket::FlexibleDataRateFrames fdFrames)
+{
+    setSocketOption(CanRawSocket::FlexibleDataRateFramesOption, QVariant::fromValue(fdFrames));
+}
+
+CanRawSocket::FlexibleDataRateFrames CanRawSocket::flexibleDataRateFrames()
+{
+    return socketOption(CanRawSocket::FlexibleDataRateFramesOption).value<CanRawSocket::FlexibleDataRateFrames>();
+}
 
 CanRawSocketPrivate::CanRawSocketPrivate()
     : canFilter(1, CanRawFilter())
@@ -435,7 +484,6 @@ qint64 CanRawSocketPrivate::readFromSocket(char *data, qint64 maxSize)
     return readBytes;
 }
 
-#include "qdebug.h"
 qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
 {
     size_t frameSize;

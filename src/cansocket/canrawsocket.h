@@ -168,20 +168,20 @@ public:
     void setSocketOption(CanRawSocketOption option, const QVariant &value);
     QVariant socketOption(CanRawSocketOption option);
 
-    inline void setCanFilter(const CanRawFilterArray &filter) { return setSocketOption(CanFilterOption, QVariant::fromValue(filter)); }
-    inline CanRawFilterArray canFilter() { return socketOption(CanFilterOption).value<CanRawFilterArray>(); }
+    void setCanFilter(const CanRawFilterArray &filter);
+    CanRawFilterArray canFilter();
 
-    inline void setErrorFilterMask(const CanFrameErrors mask) { return setSocketOption(ErrorFilterMaskOption, QVariant::fromValue(mask)); }
-    inline CanFrameErrors errorFilterMask() { return socketOption(ErrorFilterMaskOption).value<CanFrameErrors>(); }
+    void setErrorFilterMask(const CanFrameErrors mask);
+    CanFrameErrors errorFilterMask();
 
-    inline void setLoopback(Loopback loopback) { return setSocketOption(LoopbackOption, QVariant::fromValue(loopback)); }
-    inline Loopback loopback() { return socketOption(LoopbackOption).value<Loopback>(); }
+    void setLoopback(Loopback loopback);
+    Loopback loopback();
 
-    inline void setReceiveOwnMessages(ReceiveOwnMessages ownMessages) { return setSocketOption(ReceiveOwnMessagesOption, QVariant::fromValue(ownMessages)); }
-    inline ReceiveOwnMessages receiveOwnMessages() { return socketOption(ReceiveOwnMessagesOption).value<ReceiveOwnMessages>(); }
+    void setReceiveOwnMessages(ReceiveOwnMessages ownMessages);
+    ReceiveOwnMessages receiveOwnMessages();
 
-    inline void setFlexibleDataRateFrames(FlexibleDataRateFrames fdFrames) { return setSocketOption(FlexibleDataRateFramesOption, QVariant::fromValue(fdFrames)); }
-    inline FlexibleDataRateFrames flexibleDataRateFrames() { return socketOption(FlexibleDataRateFramesOption).value<FlexibleDataRateFrames>(); }
+    void setFlexibleDataRateFrames(FlexibleDataRateFrames fdFrames);
+    FlexibleDataRateFrames flexibleDataRateFrames();
 
 Q_SIGNALS:
     void canFilterChanged();

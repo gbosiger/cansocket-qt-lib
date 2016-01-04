@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
 
     canFrame.setId(CanFrame::BusError);
     canFrame.toErrorFrame();
-    canFrame.toErrorFrame();
 
     dataStream << canFrame;
 
