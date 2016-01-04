@@ -91,8 +91,8 @@ public:
 
     void clearError();
 
-    qint64 readBufferSize() const;
     virtual void setReadBufferSize(qint64 size);
+    qint64 readBufferSize() const;
 
     qint64 bytesAvailable() const Q_DECL_OVERRIDE;
     qint64 bytesToWrite() const Q_DECL_OVERRIDE;

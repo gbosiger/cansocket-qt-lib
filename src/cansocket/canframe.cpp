@@ -164,20 +164,6 @@ int CanFrame::maxDataTransferUnit() const
         return -1;
 }
 
-CanFrame::CanFrameType CanFrame::frameType() const
-{
-    if (isDataFrame())
-        return CanFrame::DataFrame;
-    else if (isFDFrame())
-        return CanFrame::FDFrame;
-    else if (isErrorFrame())
-        return CanFrame::ErrorFrame;
-    else if (isRTRFrame())
-        return CanFrame::RTRFrame;
-    else
-        return CanFrame::UnknownFrame;
-}
-
 void CanFrame::setFrameType(CanFrameType frameType)
 {
     switch (frameType) {
@@ -196,6 +182,20 @@ void CanFrame::setFrameType(CanFrameType frameType)
     default:
         clear();
     }
+}
+
+CanFrame::CanFrameType CanFrame::frameType() const
+{
+    if (isDataFrame())
+        return CanFrame::DataFrame;
+    else if (isFDFrame())
+        return CanFrame::FDFrame;
+    else if (isErrorFrame())
+        return CanFrame::ErrorFrame;
+    else if (isRTRFrame())
+        return CanFrame::RTRFrame;
+    else
+        return CanFrame::UnknownFrame;
 }
 
 bool CanFrame::isDataFrame() const
@@ -266,23 +266,14 @@ void CanFrame::setId(uint id)
     }
 }
 
-uint CanFrame::fullId() const
-{
-    return d->id;
-}
-
 void CanFrame::setFullId(uint id)
 {
     d->id = id;
 }
 
-
-CanFrame::CanFrameFormat CanFrame::frameFormat() const
+uint CanFrame::fullId() const
 {
-    if (d->effFlag())
-        return CanFrame::ExtendedFrameFormat;
-
-    return CanFrame::StandardFrameFormat;
+    return d->id;
 }
 
 void CanFrame::setFrameFormat(CanFrameFormat format)
@@ -293,9 +284,13 @@ void CanFrame::setFrameFormat(CanFrameFormat format)
         d->setEffFlag(false);
 }
 
-int CanFrame::dataLength() const
+
+CanFrame::CanFrameFormat CanFrame::frameFormat() const
 {
-    return d->dlen;
+    if (d->effFlag())
+        return CanFrame::ExtendedFrameFormat;
+
+    return CanFrame::StandardFrameFormat;
 }
 
 bool CanFrame::setDataLength(int bytes)
@@ -313,6 +308,22 @@ bool CanFrame::setDataLength(int bytes)
     else
         return false;
 }
+
+int CanFrame::dataLength() const
+{
+    return d->dlen;
+}
+
+void CanFrame::setData(const char *data, int len)
+{
+    if (len == -1 || len > maxDataLength())
+        len = maxDataLength();
+
+    for (int i = 0; i < len; ++i) {
+        d->data[i] = data[i];
+    }
+}
+
 
 char* CanFrame::data()
 {    
@@ -337,16 +348,6 @@ const char &CanFrame::operator [](int i) const
 char &CanFrame::operator [](int i)
 {
     return d->data[i];
-}
-
-void CanFrame::setData(const char *data, int len)
-{
-    if (len == -1 || len > maxDataLength())
-        len = maxDataLength();
-
-    for (int i = 0; i < len; ++i) {
-        d->data[i] = data[i];
-    }
 }
 
 CanFrame::CanFrameErrors CanFrame::error() const

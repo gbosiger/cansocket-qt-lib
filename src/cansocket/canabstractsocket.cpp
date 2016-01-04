@@ -174,12 +174,6 @@ void CanAbstractSocket::clearError()
     setSocketError(CanAbstractSocket::NoError, QString());
 }
 
-qint64 CanAbstractSocket::readBufferSize() const
-{
-    Q_D(const CanAbstractSocket);
-    return d->readBufferMaxSize;
-}
-
 void CanAbstractSocket::setReadBufferSize(qint64 size)
 {
     Q_D(CanAbstractSocket);
@@ -187,6 +181,12 @@ void CanAbstractSocket::setReadBufferSize(qint64 size)
     if (d->readBufferMaxSize == size)
         return;
     d->readBufferMaxSize = size;
+}
+
+qint64 CanAbstractSocket::readBufferSize() const
+{
+    Q_D(const CanAbstractSocket);
+    return d->readBufferMaxSize;
 }
 
 qint64 CanAbstractSocket::bytesAvailable() const

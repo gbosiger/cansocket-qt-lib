@@ -100,8 +100,8 @@ public:
     int maxDataLength() const;
     int maxDataTransferUnit() const;
 
-    CanFrameType frameType() const;
     void setFrameType(CanFrameType frameType);
+    CanFrameType frameType() const;
 
     bool isDataFrame() const;
     bool isFDFrame() const;
@@ -118,17 +118,19 @@ public:
     bool operator >(const CanFrame &rhs) const;
     bool operator <(const CanFrame &rhs) const;
 
-    uint id() const;
     void setId(uint id);
+    uint id() const;
 
-    uint fullId() const;
     void setFullId(uint id);
+    uint fullId() const;
 
-    CanFrameFormat frameFormat() const;
     void setFrameFormat(CanFrameFormat format);
+    CanFrameFormat frameFormat() const;
 
-    int dataLength() const;
     virtual bool setDataLength(int bytes);
+    int dataLength() const;
+
+    void setData(const char* data, int len = -1);
 
     char *data();
     const char *data() const;
@@ -137,8 +139,6 @@ public:
     const char &at(int i) const;
     const char &operator[](int i) const;
     char &operator[](int i);
-
-    void setData(const char* data, int len = -1);
 
     CanFrameErrors error() const;
 

@@ -29,8 +29,8 @@ class CanRawFilterArrayData;
 
 typedef CanFrame::CanFrameErrors CanFrameErrors;
 
-class CANSOCKET_EXPORT CanRawFilter {
-
+class CANSOCKET_EXPORT CanRawFilter
+{
 public:
     typedef CanFrame::CanFrameFormat CanFrameFormat;
 
@@ -46,16 +46,16 @@ public:
     {
     }
 
-    inline void setFilter(quint32 fullId, quint32 fullIdMask) {
+    inline void setupFilter(quint32 fullId, quint32 fullIdMask) {
         m_fullId = fullId;
         m_fullIdMask = fullIdMask;
     }
 
-    inline quint32 fullId() const { return m_fullId; }
     inline void setFullId(quint32 id) { m_fullId = id; }
+    inline quint32 fullId() const { return m_fullId; }
 
-    inline quint32 fullIdMask() const { return m_fullIdMask; }
     inline void setFullIdMask(quint32 mask) { m_fullIdMask = mask; }
+    inline quint32 fullIdMask() const { return m_fullIdMask; }
 
     inline bool operator ==(const CanRawFilter &rhs) const
     {
@@ -70,8 +70,8 @@ private:
 };
 Q_DECLARE_METATYPE(CanRawFilter)
 
-class CANSOCKET_EXPORT CanRawFilterArray {
-
+class CANSOCKET_EXPORT CanRawFilterArray
+{
 public:
     CanRawFilterArray();
     CanRawFilterArray(int size);

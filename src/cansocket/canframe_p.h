@@ -124,18 +124,6 @@ public:
         data.clear();
     }
 
-    inline bool errFlag() const {
-        return (id & CAN_ERR_FLAG) != 0;
-    }
-
-    inline bool rtrFlag() const {
-        return (id & CAN_RTR_FLAG) != 0;
-    }
-
-    inline bool effFlag() const {
-        return (id & CAN_EFF_FLAG) != 0;
-    }
-
     inline void setErrFlag(bool err)
     {
         if (err)
@@ -158,6 +146,18 @@ public:
             id |= CAN_EFF_FLAG;
         else
             id &= ~CAN_EFF_FLAG;
+    }
+
+    inline bool errFlag() const {
+        return (id & CAN_ERR_FLAG) != 0;
+    }
+
+    inline bool rtrFlag() const {
+        return (id & CAN_RTR_FLAG) != 0;
+    }
+
+    inline bool effFlag() const {
+        return (id & CAN_EFF_FLAG) != 0;
     }
 
     inline bool isDataFrame() const {
