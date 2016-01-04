@@ -25,17 +25,17 @@ sudo modprobe vcan
 sudo ip link add dev vcan0 type vcan
 sudo ip link set up vcan0
 ```
-Can-utils (https://github.com/linux-can/can-utils) can also be then used for testing. Fore example dumping (loopback) frames to the terminal:
+Can-utils (https://github.com/linux-can/can-utils) can also be then used for testing. For example dumping (loopback) frames to the terminal:
 ```
 candump -e  any,0:0,#FFFFFFFF
 ```
-or for generating new ones once the example is executed. They will be received in nonblocking mode, by the example application:
+or for generating new ones once the example is executed. They will be received in nonblocking mode, by the example application (filtering should be removed from the example first):
 ```
 cangen -v vcan0
 ```
 
 
-Code snippet of the example for demonstaration:
+Code snippet of the example for quick demonstaration:
 ```
     QString interfaceName = "vcan0";
     char dataToSend[] = "\x11\x22\x33\x44\x55\xAA\xFF";
