@@ -19,6 +19,9 @@
 #ifndef CANFRAME_P
 #define CANFRAME_P
 
+#include <QtCore/qshareddata.h>
+#include <QtCore/qvector.h>
+
 #ifdef Q_OS_LINUX
 #   include <linux/can.h>
 #   include <linux/can/raw.h>
@@ -38,6 +41,7 @@
 #ifndef CAN_MAX_DLEN
 #   define CAN_MAX_DLEN 8
 #endif
+
 
 inline quint8 res0FromCanMTU(int mtu)
 {
@@ -78,12 +82,6 @@ inline int dataLengthFromResBytes(const quint8 &res0, const quint8 &res1)
     else
         return -1;
 }
-
-#include <QtCore/qshareddata.h>
-#include <QtCore/qvector.h>
-
-quint8 res0FromCanMTU(int mtu);
-quint8 res1FromCanMTU(int mtu);
 
 
 class CanFrameData : public QSharedData
