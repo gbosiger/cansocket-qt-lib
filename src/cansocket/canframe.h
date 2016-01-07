@@ -121,7 +121,7 @@ public:
     void setId(uint id);
     uint id() const;
 
-    void setFullId(uint id);
+    void setFullId(uint fullId);
     uint fullId() const;
 
     void setFrameFormat(CanFrameFormat format);
