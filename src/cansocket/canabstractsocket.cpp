@@ -45,32 +45,6 @@
     different CAN protocols and contains all common functionality of these classes.
     As such it is not ment to be instantiated directly. Regardless of inheriting
     socket type, it provides unified API.
-
-    At any time, CanAbstractSocket has a state (returned by state()). The initial
-    state is UnconnectedState. After calling connectToInterface(), the socket enters
-    Connecting state and if socket is successfully open, it then enters Connected
-    state. Whenever state is changed, stateChanged() signal is emitted.
-
-    Read or write data by calling read() or write(), or use the
-    convenience functions readLine() and readAll(). CanAbstractSocket
-    also inherits getChar(), putChar(), and ungetChar() from
-    QIODevice, which work on single bytes. The bytesWritten() signal
-    is emitted when data has been written to the socket. Note that Qt does
-    not limit the write buffer size. You can monitor its size by listening
-    to this signal.
-
-    The readyRead() signal is emitted every time a new chunk of data
-    has arrived. bytesAvailable() then returns the number of bytes
-    that are available for reading. Typically, you would connect the
-    readyRead() signal to a slot and read all available data there.
-    If you don't read all the data at once, the remaining data will
-    still be available later, and any new incoming data will be
-    appended to CanAbstractSocket's internal read buffer. To limit the
-    size of the read buffer, call setReadBufferSize().
-
-    To close the socket, call disconnectFronInterface(). CanAbstractSocket enters
-    CanAbstractSocket::ClosingState. When CanAbstractSocket actually closes the
-    socket, enters CanAbstractSocket::ClosedState.
  */
 
 /*!
