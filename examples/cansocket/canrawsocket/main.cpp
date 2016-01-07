@@ -56,19 +56,19 @@ int main(int argc, char *argv[])
     dataStream.setDevice(canRawSocket);
 
     CanFrame canFrame(CanFrame::DataFrame);
-    canFrame.setId(0x1ab);
+    canFrame.setCanId(0x1ab);
     canFrame.setDataLength(8);
     canFrame.setData(dataToSend);
 
     dataStream << canFrame;
 
-    canFrame.setId(CanFrame::BusError);
+    canFrame.setCanId(CanFrame::BusError);
     canFrame.toErrorFrame();
 
     dataStream << canFrame;
 
     canFrame.toDataFrame();
-    canFrame.setId(0x1cc);
+    canFrame.setCanId(0x1cc);
     canFrame.setDataLength(8);
 
     dataStream << canFrame;

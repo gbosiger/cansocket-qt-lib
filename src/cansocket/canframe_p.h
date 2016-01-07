@@ -89,7 +89,7 @@ class CanFrameData : public QSharedData
 public:
     CanFrameData()
         : QSharedData()
-        , id(0)
+        , fullId(0)
         , dlen(0)
         , flags(0)
         , res0(0)
@@ -100,7 +100,7 @@ public:
 
     CanFrameData(const CanFrameData &other)
         : QSharedData(other)
-        , id(other.id)
+        , fullId(other.fullId)
         , dlen(other.dlen)
         , flags(other.flags)
         , res0(other.res0)
@@ -114,7 +114,7 @@ public:
     }
 
     inline void clear() {
-        id = 0;
+        fullId = 0;
         dlen = 0;
         flags = 0;
         res0 = 0;
@@ -125,37 +125,37 @@ public:
     inline void setErrFlag(bool err)
     {
         if (err)
-            id |= CAN_ERR_FLAG;
+            fullId |= CAN_ERR_FLAG;
         else
-            id &= ~CAN_ERR_FLAG;
+            fullId &= ~CAN_ERR_FLAG;
     }
 
     inline void setRtrFlag(bool rtr)
     {
         if (rtr)
-            id |= CAN_RTR_FLAG;
+            fullId |= CAN_RTR_FLAG;
         else
-            id &= ~CAN_RTR_FLAG;
+            fullId &= ~CAN_RTR_FLAG;
     }
 
     inline void setEffFlag(bool eff)
     {
         if (eff)
-            id |= CAN_EFF_FLAG;
+            fullId |= CAN_EFF_FLAG;
         else
-            id &= ~CAN_EFF_FLAG;
+            fullId &= ~CAN_EFF_FLAG;
     }
 
     inline bool errFlag() const {
-        return (id & CAN_ERR_FLAG) != 0;
+        return (fullId & CAN_ERR_FLAG) != 0;
     }
 
     inline bool rtrFlag() const {
-        return (id & CAN_RTR_FLAG) != 0;
+        return (fullId & CAN_RTR_FLAG) != 0;
     }
 
     inline bool effFlag() const {
-        return (id & CAN_EFF_FLAG) != 0;
+        return (fullId & CAN_EFF_FLAG) != 0;
     }
 
     inline bool isDataFrame() const {
@@ -264,7 +264,7 @@ public:
             setErrFlag(false);
     }
 
-    quint32 id;
+    quint32 fullId;
     quint8 dlen;
     quint8 flags;
     quint8 res0;

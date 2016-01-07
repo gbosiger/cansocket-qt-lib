@@ -35,9 +35,8 @@ public:
     typedef CanFrame::CanFrameFormat CanFrameFormat;
 
     CanRawFilter(quint32 fullId = 0, quint32 fullIdMask = 0)
-        : m_fullId(fullId)
-        , m_fullIdMask(fullIdMask)
     {
+        setupFilter(fullId, fullIdMask);
     }
 
     CanRawFilter(const CanRawFilter &rhs)
@@ -50,6 +49,11 @@ public:
         m_fullId = fullId;
         m_fullIdMask = fullIdMask;
     }
+
+//    inline void setupFilter(quint32 canId, quint32 mask,
+//                            CanFrame::CanFrameFormat format = CanFrame::StandardFrameFormat,
+//                            CanFrame::CanFrameType type = CanFrame::DataFrame);
+
 
     inline void setFullId(quint32 id) { m_fullId = id; }
     inline quint32 fullId() const { return m_fullId; }

@@ -118,8 +118,8 @@ public:
     bool operator >(const CanFrame &rhs) const;
     bool operator <(const CanFrame &rhs) const;
 
-    void setId(uint id);
-    uint id() const;
+    void setCanId(uint canId);
+    uint canId() const;
 
     void setFullId(uint fullId);
     uint fullId() const;

@@ -30,7 +30,7 @@ QDataStream &operator<<(QDataStream &stream, const CanFrame &frame)
     if (!frame.isValid())
         return stream;
 
-    stream << frame.d->id
+    stream << frame.d->fullId
            << frame.d->dlen
            << frame.d->flags
            << frame.d->res0
@@ -45,7 +45,7 @@ QDataStream &operator<<(QDataStream &stream, const CanFrame &frame)
 
 QDataStream &operator>>(QDataStream &stream, CanFrame &frame)
 {
-    stream >> frame.d->id
+    stream >> frame.d->fullId
             >> frame.d->dlen
             >> frame.d->flags
             >> frame.d->res0
@@ -62,7 +62,7 @@ QDataStream &operator>>(QDataStream &stream, CanFrame &frame)
         }
     }
     else {
-        frame.setId(static_cast<uint>(CanFrame::UnknownCanFrameError));
+        frame.setCanId(static_cast<uint>(CanFrame::UnknownCanFrameError));
         frame.toErrorFrame();
     }
 
@@ -75,7 +75,7 @@ QDataStream &operator>>(QDataStream &stream, CanFrame &frame)
 QDebug operator<<(QDebug dbg, const CanFrame &frame)
 {
     dbg.noquote();
-    dbg << QString::number(frame.id(), 16)
+    dbg << QString::number(frame.canId(), 16)
         << frame.dataLength()
         << QByteArray(frame.constData(), frame.dataLength()).toHex();
 
@@ -245,35 +245,35 @@ bool CanFrame::operator ==(const CanFrame &rhs) const
 
 bool CanFrame::operator >(const CanFrame &rhs) const
 {
-    return (id() & CAN_EFF_MASK) > (rhs.id() & CAN_EFF_MASK);
+    return (canId() & CAN_EFF_MASK) > (rhs.canId() & CAN_EFF_MASK);
 }
 
 bool CanFrame::operator <(const CanFrame &rhs) const
 {
-    return (id() & CAN_EFF_MASK) < (rhs.id() & CAN_EFF_MASK);
+    return (canId() & CAN_EFF_MASK) < (rhs.canId() & CAN_EFF_MASK);
 }
 
-uint CanFrame::id() const
+uint CanFrame::canId() const
 {
-    return d->id & CAN_EFF_MASK;
+    return d->fullId & CAN_EFF_MASK;
 }
 
-void CanFrame::setId(uint id)
+void CanFrame::setCanId(uint id)
 {
-    if ((d->id & CAN_EFF_MASK) != (id & CAN_EFF_MASK)) {
-        d->id &= ~CAN_EFF_MASK;
-        d->id |= id & CAN_EFF_MASK;
+    if ((d->fullId & CAN_EFF_MASK) != (id & CAN_EFF_MASK)) {
+        d->fullId &= ~CAN_EFF_MASK;
+        d->fullId |= id & CAN_EFF_MASK;
     }
 }
 
 void CanFrame::setFullId(uint id)
 {
-    d->id = id;
+    d->fullId = id;
 }
 
 uint CanFrame::fullId() const
 {
-    return d->id;
+    return d->fullId;
 }
 
 void CanFrame::setFrameFormat(CanFrameFormat format)
@@ -357,23 +357,23 @@ CanFrame::CanFrameErrors CanFrame::error() const
     if (!isErrorFrame())
         return errors;
 
-    if (id() & CAN_ERR_TX_TIMEOUT)
+    if (canId() & CAN_ERR_TX_TIMEOUT)
         errors |= TXTimeoutError;
-    if (id() & CAN_ERR_LOSTARB)
+    if (canId() & CAN_ERR_LOSTARB)
         errors |= LostArbitrationError;
-    if (id() & CAN_ERR_CRTL)
+    if (canId() & CAN_ERR_CRTL)
         errors |= ControllerProblemsError;
-    if (id() & CAN_ERR_PROT)
+    if (canId() & CAN_ERR_PROT)
         errors |= ProtocolViolationsError;
-    if (id() & CAN_ERR_TRX)
+    if (canId() & CAN_ERR_TRX)
         errors |= TransceiverStatusError;
-    if (id() & CAN_ERR_ACK)
+    if (canId() & CAN_ERR_ACK)
         errors |= NoACKOnTransmissionError;
-    if (id() & CAN_ERR_BUSOFF)
+    if (canId() & CAN_ERR_BUSOFF)
         errors |= BusOffError;
-    if (id() & CAN_ERR_BUSERROR)
+    if (canId() & CAN_ERR_BUSERROR)
         errors |= BusError;
-    if (id() & CAN_ERR_RESTARTED)
+    if (canId() & CAN_ERR_RESTARTED)
         errors |= ControllerRestartedError;
 
     return errors;
