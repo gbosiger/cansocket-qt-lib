@@ -34,6 +34,8 @@ class CANSOCKET_EXPORT CanAbstractSocket : public QIODevice
     Q_PROPERTY(SocketState socketState READ socketState NOTIFY stateChanged)
     Q_PROPERTY(SocketError error READ error RESET clearError NOTIFY error)
 
+    Q_ENUMS(SocketType SocketError SocketState)
+
 public:
     enum SocketType {
         RawSocket,
@@ -43,7 +45,6 @@ public:
         IsoTpSocket,
         UnkownCanSocketType = -1
     };
-    Q_ENUM(SocketType)
 
     enum SocketError {
         UnkownSocketError,
@@ -58,7 +59,6 @@ public:
 
         NoError = -1
     };
-    Q_ENUM(SocketError)
 
     enum SocketState {
         UnconnectedState,
@@ -66,7 +66,6 @@ public:
         ConnectedState,
         ClosingState
     };
-    Q_ENUM(SocketState)
 
     CanAbstractSocket(SocketType socketType, QObject *parent = Q_NULLPTR);
     virtual ~CanAbstractSocket();

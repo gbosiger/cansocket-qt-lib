@@ -132,6 +132,8 @@ class CANSOCKET_EXPORT CanRawSocket : public CanAbstractSocket
     Q_PROPERTY(ReceiveOwnMessages receiveOwnMessages READ receiveOwnMessages WRITE setReceiveOwnMessages NOTIFY receiveOwnMessagesChanged)
     Q_PROPERTY(FlexibleDataRateFrames flexibleDataRateFrames READ flexibleDataRateFrames WRITE setFlexibleDataRateFrames NOTIFY flexibleDataRateFramesChanged)
 
+    Q_ENUMS(CanRawSocketOption Loopback ReceiveOwnMessages FlexibleDataRateFrames)
+
 public:
     enum CanRawSocketOption {
         CanFilterOption,
@@ -140,7 +142,6 @@ public:
         ReceiveOwnMessagesOption,
         FlexibleDataRateFramesOption
     };
-    Q_ENUM(CanRawSocketOption)
 
     enum Loopback {
         DisabledLoopback = 0,
@@ -148,7 +149,6 @@ public:
 
         UndefinedLoopback = -1
     };
-    Q_ENUM(Loopback)
 
     enum ReceiveOwnMessages {
         DisabledOwnMessages = 0,
@@ -156,7 +156,6 @@ public:
 
         UndefinedOwnMessages = -1
     };
-    Q_ENUM(ReceiveOwnMessages)
 
     enum FlexibleDataRateFrames {
         DisabledFDFrames = 0,
@@ -164,7 +163,6 @@ public:
 
         UndefinedFDFrames = -1
     };
-    Q_ENUM(FlexibleDataRateFrames)
 
     explicit CanRawSocket(QObject *parent = Q_NULLPTR);
     virtual ~CanRawSocket();

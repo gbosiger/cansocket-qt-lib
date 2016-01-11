@@ -150,16 +150,19 @@ private:
     friend CANSOCKET_EXPORT QDataStream &operator>>(QDataStream &, CanFrame &);
 };
 
+Q_DECLARE_METATYPE(CanFrame)
+Q_DECLARE_METATYPE(CanFrame::CanFrameError)
+Q_DECLARE_METATYPE(CanFrame::CanFrameErrors)
+Q_DECLARE_METATYPE(CanFrame::CanFrameFullIdMask)
+Q_DECLARE_METATYPE(CanFrame::CanFrameFullIdFlag)
 
 Q_DECLARE_SHARED(CanFrame)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameErrors)
-Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameFullIdMasks)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameFullIdFlags)
 
-Q_DECLARE_METATYPE(CanFrame)
-Q_DECLARE_METATYPE(CanFrame::CanFrameError)
-Q_DECLARE_METATYPE(CanFrame::CanFrameErrors)
+
+
 
 
 #endif // CANFRAME_H
