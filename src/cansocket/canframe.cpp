@@ -81,7 +81,7 @@ QDebug operator<<(QDebug dbg, const CanFrame &frame)
 
     if (frame.isErrorFrame())
         dbg << QByteArray("ERRORFRAME");
-    else if (frame.isRTRFrame())
+    else if (frame.isRtrFrame())
         dbg << QByteArray("RTRFRAME");
 
     return dbg;
@@ -144,7 +144,7 @@ int CanFrame::maxDataLength() const
         return CANFD_MAX_DLEN;
     else if (isErrorFrame())
         return CAN_MAX_DLEN;
-    else if (isRTRFrame())
+    else if (isRtrFrame())
         return 0;
     else
         return -1;
@@ -158,7 +158,7 @@ int CanFrame::maxDataTransferUnit() const
         return CANFD_MTU;
     else if (isErrorFrame())
         return CAN_MTU;
-    else if (isRTRFrame())
+    else if (isRtrFrame())
         return CAN_MTU;
     else
         return -1;
@@ -170,14 +170,14 @@ void CanFrame::setFrameType(CanFrameType frameType)
     case CanFrame::DataFrame:
         d->toDataFrame();
         break;
-    case CanFrame::FDFrame:
-        d->toFDFrame();
+    case CanFrame::FdFrame:
+        d->toFdFrame();
         break;
     case CanFrame::ErrorFrame:
         d->toErrorFrame();
         break;
-    case CanFrame::RTRFrame:
-        d->toRTRFrame();
+    case CanFrame::RtrFrame:
+        d->toRtrFrame();
         break;
     default:
         clear();
@@ -189,11 +189,11 @@ CanFrame::CanFrameType CanFrame::frameType() const
     if (isDataFrame())
         return CanFrame::DataFrame;
     else if (isFDFrame())
-        return CanFrame::FDFrame;
+        return CanFrame::FdFrame;
     else if (isErrorFrame())
         return CanFrame::ErrorFrame;
-    else if (isRTRFrame())
-        return CanFrame::RTRFrame;
+    else if (isRtrFrame())
+        return CanFrame::RtrFrame;
     else
         return CanFrame::UnknownFrame;
 }
@@ -205,7 +205,7 @@ bool CanFrame::isDataFrame() const
 
 bool CanFrame::isFDFrame() const
 {
-    return d->isFDFrame();
+    return d->isFdFrame();
 }
 
 bool CanFrame::isErrorFrame() const
@@ -213,9 +213,9 @@ bool CanFrame::isErrorFrame() const
     return d->isErrorFrame();
 }
 
-bool CanFrame::isRTRFrame() const
+bool CanFrame::isRtrFrame() const
 {
-    return d->isRTRFrame();
+    return d->isRtrFrame();
 }
 
 void CanFrame::toDataFrame()
@@ -223,9 +223,9 @@ void CanFrame::toDataFrame()
     d->toDataFrame();
 }
 
-void CanFrame::toFDFrame()
+void CanFrame::toFdFrame()
 {
-    d->toFDFrame();
+    d->toFdFrame();
 }
 
 void CanFrame::toErrorFrame()
@@ -233,9 +233,9 @@ void CanFrame::toErrorFrame()
     d->toErrorFrame();
 }
 
-void CanFrame::toRTRFrame()
+void CanFrame::toRtrFrame()
 {
-    d->toRTRFrame();
+    d->toRtrFrame();
 }
 
 bool CanFrame::operator ==(const CanFrame &rhs) const
@@ -299,7 +299,7 @@ bool CanFrame::setDataLength(int bytes)
         return false;
     else if (dataLength() == bytes)
         return true;
-    else if (isRTRFrame() || isErrorFrame())
+    else if (isRtrFrame() || isErrorFrame())
         return false;
     else if (bytes >= 0 && bytes <= maxDataLength()) {
         d->dlen = bytes;

@@ -43,7 +43,7 @@
 #endif
 
 
-inline quint8 res0FromCanMTU(int mtu)
+inline quint8 res0FromCanMtu(int mtu)
 {
     switch(mtu) {
     case CAN_MTU:
@@ -57,7 +57,7 @@ inline quint8 res0FromCanMTU(int mtu)
     }
 }
 
-inline quint8 res1FromCanMTU(int mtu)
+inline quint8 res1FromCanMtu(int mtu)
 {
     switch(mtu) {
     case CAN_MTU:
@@ -160,17 +160,17 @@ public:
 
     inline bool isDataFrame() const {
         return (dlen <= CAN_MAX_DLEN
-                && res0 == res0FromCanMTU(CAN_MTU)
-                && res1 == res1FromCanMTU(CAN_MTU)
+                && res0 == res0FromCanMtu(CAN_MTU)
+                && res1 == res1FromCanMtu(CAN_MTU)
                 && data.size() == CAN_MAX_DLEN
                 && !errFlag()
                 && !rtrFlag());
     }
 
-    inline bool isFDFrame() const {
+    inline bool isFdFrame() const {
         return (dlen <= CANFD_MAX_DLEN
-                && res0 == res0FromCanMTU(CANFD_MTU)
-                && res1 == res1FromCanMTU(CANFD_MTU)
+                && res0 == res0FromCanMtu(CANFD_MTU)
+                && res1 == res1FromCanMtu(CANFD_MTU)
                 && data.size() == CANFD_MAX_DLEN
                 && !errFlag()
                 && !rtrFlag());
@@ -178,17 +178,17 @@ public:
 
     inline bool isErrorFrame() const {
         return (dlen == CAN_MAX_DLEN
-                && res0 == res0FromCanMTU(CAN_MTU)
-                && res1 == res1FromCanMTU(CAN_MTU)
+                && res0 == res0FromCanMtu(CAN_MTU)
+                && res1 == res1FromCanMtu(CAN_MTU)
                 && data.size() == CAN_MAX_DLEN
                 && errFlag()
                 && !rtrFlag());
     }
 
-    inline bool isRTRFrame() const {
+    inline bool isRtrFrame() const {
         return (dlen == 0
-                && res0 == res0FromCanMTU(CAN_MTU)
-                && res1 == res1FromCanMTU(CAN_MTU)
+                && res0 == res0FromCanMtu(CAN_MTU)
+                && res1 == res1FromCanMtu(CAN_MTU)
                 && data.size() == CAN_MAX_DLEN
                 && !errFlag()
                 && rtrFlag());
@@ -201,8 +201,8 @@ public:
 
         flags = 0;
 
-        res0 = res0FromCanMTU(CAN_MTU);
-        res1 = res1FromCanMTU(CAN_MTU);
+        res0 = res0FromCanMtu(CAN_MTU);
+        res1 = res1FromCanMtu(CAN_MTU);
 
         data.resize(CAN_MAX_DLEN);
 
@@ -212,13 +212,13 @@ public:
             setErrFlag(false);
     }
 
-    inline void toFDFrame() {
+    inline void toFdFrame() {
 
         if (dlen > CANFD_MAX_DLEN)
             dlen = CANFD_MAX_DLEN;
 
-        res0 = res0FromCanMTU(CANFD_MTU);
-        res1 = res1FromCanMTU(CANFD_MTU);
+        res0 = res0FromCanMtu(CANFD_MTU);
+        res1 = res1FromCanMtu(CANFD_MTU);
 
         data.resize(CANFD_MAX_DLEN);
 
@@ -235,8 +235,8 @@ public:
 
         flags = 0;
 
-        res0 = res0FromCanMTU(CAN_MTU);
-        res1 = res1FromCanMTU(CAN_MTU);
+        res0 = res0FromCanMtu(CAN_MTU);
+        res1 = res1FromCanMtu(CAN_MTU);
 
         data.resize(CAN_MAX_DLEN);
 
@@ -246,15 +246,15 @@ public:
             setErrFlag(true);
     }
 
-    inline void toRTRFrame() {
+    inline void toRtrFrame() {
 
         if (dlen != 0)
             dlen = 0;
 
         flags = 0;
 
-        res0 = res0FromCanMTU(CAN_MTU);
-        res1 = res1FromCanMTU(CAN_MTU);
+        res0 = res0FromCanMtu(CAN_MTU);
+        res1 = res1FromCanMtu(CAN_MTU);
 
         data = QVector<char>(CAN_MAX_DLEN, '0');
 
@@ -264,7 +264,7 @@ public:
             setErrFlag(false);
     }
 
-    quint32 fullId;
+    uint fullId;
     quint8 dlen;
     quint8 flags;
     quint8 res0;

@@ -465,14 +465,14 @@ qint64 CanRawSocketPrivate::readFromSocket(char *data, qint64 maxSize)
         */
         if (ret == CAN_MTU) {
             // received can frame in can or canfd mode
-            data[RES0_BYTE] = res0FromCanMTU(CAN_MTU);
-            data[RES1_BYTE] = res1FromCanMTU(CAN_MTU);
+            data[RES0_BYTE] = res0FromCanMtu(CAN_MTU);
+            data[RES1_BYTE] = res1FromCanMtu(CAN_MTU);
         }
 #ifdef CANFD_MTU
         else if (ret == CANFD_MTU && static_cast<int>(frameSize) == ret) {
             // received canfd frame in canfd mode
-            data[RES0_BYTE] = res0FromCanMTU(CANFD_MTU);
-            data[RES1_BYTE] = res1FromCanMTU(CANFD_MTU);
+            data[RES0_BYTE] = res0FromCanMtu(CANFD_MTU);
+            data[RES1_BYTE] = res1FromCanMtu(CANFD_MTU);
         }
 #endif
         else
@@ -499,14 +499,14 @@ qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
         res0 = data[RES0_BYTE];
         res1 = data[RES1_BYTE];
 
-        if (res0 == res0FromCanMTU(CAN_MTU)
-                && res1 == res1FromCanMTU(CAN_MTU)) {
+        if (res0 == res0FromCanMtu(CAN_MTU)
+                && res1 == res1FromCanMtu(CAN_MTU)) {
             //standard can frame can be written in can and in canfd mode
             frameSize = CAN_MTU;
         }
 #ifdef CANFD_MTU
-        else if (res0 == res0FromCanMTU(CANFD_MTU)
-                 && res1 == res1FromCanMTU(CANFD_MTU)
+        else if (res0 == res0FromCanMtu(CANFD_MTU)
+                 && res1 == res1FromCanMtu(CANFD_MTU)
                  && flexibleDataRateFrames == CanRawSocket::EnabledFDFrames) {
             //fd frame can only be written in fd mode
             frameSize = CANFD_MTU;

@@ -34,7 +34,7 @@ class CANSOCKET_EXPORT CanRawFilter
 public:
     typedef CanFrame::CanFrameFormat CanFrameFormat;
 
-    CanRawFilter(quint32 fullId = 0, quint32 fullIdMask = 0)
+    CanRawFilter(uint fullId = 0, uint fullIdMask = 0)
     {
         setupFilter(fullId, fullIdMask);
     }
@@ -45,7 +45,7 @@ public:
     {
     }
 
-    inline void setupFilter(quint32 fullId, quint32 fullIdMask) {
+    inline void setupFilter(uint fullId, uint fullIdMask) {
         m_fullId = fullId;
         m_fullIdMask = fullIdMask;
     }
@@ -55,11 +55,11 @@ public:
 //                            CanFrame::CanFrameType type = CanFrame::DataFrame);
 
 
-    inline void setFullId(quint32 id) { m_fullId = id; }
-    inline quint32 fullId() const { return m_fullId; }
+    inline void setFullId(uint id) { m_fullId = id; }
+    inline uint fullId() const { return m_fullId; }
 
-    inline void setFullIdMask(quint32 mask) { m_fullIdMask = mask; }
-    inline quint32 fullIdMask() const { return m_fullIdMask; }
+    inline void setFullIdMask(uint mask) { m_fullIdMask = mask; }
+    inline uint fullIdMask() const { return m_fullIdMask; }
 
     inline bool operator ==(const CanRawFilter &rhs) const
     {

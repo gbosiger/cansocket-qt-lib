@@ -41,9 +41,9 @@ class CANSOCKET_EXPORT CanFrame
 public:
     enum CanFrameType {
         DataFrame,
-        FDFrame,
+        FdFrame,
         ErrorFrame,
-        RTRFrame,
+        RtrFrame,
 
         UnknownFrame = -1,
     };
@@ -78,8 +78,8 @@ public:
     Q_DECLARE_FLAGS(CanFrameFullIdMasks, CanFrameFullIdMask)
 
     enum CanFrameFullIdFlag {
-        EFFIdFlag = 0x80000000,
-        RTRIdFlag = 0x40000000,
+        EffIdFlag = 0x80000000,
+        RtrIdFlag = 0x40000000,
         ErrorIdFlag = 0x20000000
     };
     Q_DECLARE_FLAGS(CanFrameFullIdFlags, CanFrameFullIdFlag)
@@ -106,12 +106,12 @@ public:
     bool isDataFrame() const;
     bool isFDFrame() const;
     bool isErrorFrame() const;
-    bool isRTRFrame() const;
+    bool isRtrFrame() const;
 
     void toDataFrame();
-    void toFDFrame();
+    void toFdFrame();
     void toErrorFrame();
-    void toRTRFrame();
+    void toRtrFrame();
 
     bool operator ==(const CanFrame &rhs) const;
     bool operator !=(const CanFrame &rhs) const { return !operator==(rhs); }
@@ -127,7 +127,7 @@ public:
     void setFrameFormat(CanFrameFormat format);
     CanFrameFormat frameFormat() const;
 
-    virtual bool setDataLength(int bytes);
+    bool setDataLength(int bytes);
     int dataLength() const;
 
     void setData(const char* data, int len = -1);
