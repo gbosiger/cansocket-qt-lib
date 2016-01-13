@@ -9,8 +9,8 @@ PUBLIC_HEADERS += \
 
 PRIVATE_HEADERS += \
     $$PWD/canabstractsocket_p.h \
-    $$PWD/canrawsocket_p.h \
-    $$PWD/canframe_p.h
+    $$PWD/canframe_p.h \
+    $$PWD/canrawsocket_p.h
 
 SOURCES += \
     $$PWD/canrawsocket.cpp \

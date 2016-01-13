@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     CanRawFilter rawFilter;
     rawFilter.setFullId(0x1ab);
-    rawFilter.setFullIdMask(CanFrame::EFFIdFlag | CanFrame::RTRIdFlag | CanFrame::SFFIdMask);
+    rawFilter.setFullIdMask(CanFrame::EffIdFlag | CanFrame::RtrIdFlag | CanFrame::SffIdMask);
 
     CanRawFilterArray rawFilterArray;
     rawFilterArray.append(rawFilter);

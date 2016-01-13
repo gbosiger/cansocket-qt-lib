@@ -18,7 +18,6 @@
 
 #include "canframe.h"
 #include "canframe_p.h"
-#include "canrawsocket_p.h"
 
 #include <qdebug.h>
 #include <qdatastream.h>

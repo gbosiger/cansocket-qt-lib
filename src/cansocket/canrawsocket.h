@@ -45,7 +45,8 @@ public:
     {
     }
 
-    inline void setupFilter(uint fullId, uint fullIdMask) {
+    inline void setupFilter(uint fullId, uint fullIdMask)
+    {
         m_fullId = fullId;
         m_fullIdMask = fullIdMask;
     }
@@ -69,8 +70,8 @@ public:
     inline bool operator !=(const CanRawFilter &rhs) const { return !operator==(rhs); }
 
 private:
-    quint32 m_fullId;
-    quint32 m_fullIdMask;
+    uint m_fullId;
+    uint m_fullIdMask;
 };
 Q_DECLARE_METATYPE(CanRawFilter)
 

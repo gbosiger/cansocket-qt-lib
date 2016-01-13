@@ -72,8 +72,8 @@ public:
     };
 
     enum CanFrameFullIdMask {
-        SFFIdMask = 0x000007FF,
-        EFFIdMask = 0x1FFFFFFF
+        SffIdMask = 0x000007FF,
+        EffIdMask = 0x1FFFFFFF
     };
     Q_DECLARE_FLAGS(CanFrameFullIdMasks, CanFrameFullIdMask)
 
