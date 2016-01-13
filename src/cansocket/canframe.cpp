@@ -139,7 +139,7 @@ int CanFrame::maxDataLength() const
 {
     if (isDataFrame())
         return CAN_MAX_DLEN;
-    else if (isFDFrame())
+    else if (isFdFrame())
         return CANFD_MAX_DLEN;
     else if (isErrorFrame())
         return CAN_MAX_DLEN;
@@ -153,7 +153,7 @@ int CanFrame::maxDataTransferUnit() const
 {
     if (isDataFrame())
         return CAN_MTU;
-    else if (isFDFrame())
+    else if (isFdFrame())
         return CANFD_MTU;
     else if (isErrorFrame())
         return CAN_MTU;
@@ -187,7 +187,7 @@ CanFrame::CanFrameType CanFrame::frameType() const
 {
     if (isDataFrame())
         return CanFrame::DataFrame;
-    else if (isFDFrame())
+    else if (isFdFrame())
         return CanFrame::FdFrame;
     else if (isErrorFrame())
         return CanFrame::ErrorFrame;
@@ -202,7 +202,7 @@ bool CanFrame::isDataFrame() const
     return d->isDataFrame();
 }
 
-bool CanFrame::isFDFrame() const
+bool CanFrame::isFdFrame() const
 {
     return d->isFdFrame();
 }

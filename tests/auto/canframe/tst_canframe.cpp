@@ -42,57 +42,57 @@ void tst_CanFrame::constructors()
 {
         CanFrame empty;
         QVERIFY(!empty.isDataFrame());
-        QVERIFY(!empty.isFDFrame());
+        QVERIFY(!empty.isFdFrame());
         QVERIFY(!empty.isErrorFrame());
-        QVERIFY(!empty.isRTRFrame());
+        QVERIFY(!empty.isRtrFrame());
         QVERIFY(!(empty.fullId() & CanFrame::ErrorIdFlag));
-        QVERIFY(!(empty.fullId() & CanFrame::EFFIdFlag));
-        QVERIFY(!(empty.fullId() & CanFrame::RTRIdFlag));
+        QVERIFY(!(empty.fullId() & CanFrame::EffIdFlag));
+        QVERIFY(!(empty.fullId() & CanFrame::RtrIdFlag));
 
         CanFrame undefined(CanFrame::UnknownFrame);
         QVERIFY(!undefined.isDataFrame());
-        QVERIFY(!undefined.isFDFrame());
+        QVERIFY(!undefined.isFdFrame());
         QVERIFY(!undefined.isErrorFrame());
-        QVERIFY(!undefined.isRTRFrame());
+        QVERIFY(!undefined.isRtrFrame());
         QVERIFY(!(undefined.fullId() & CanFrame::ErrorIdFlag));
-        QVERIFY(!(undefined.fullId() & CanFrame::EFFIdFlag));
-        QVERIFY(!(undefined.fullId() & CanFrame::RTRIdFlag));
+        QVERIFY(!(undefined.fullId() & CanFrame::EffIdFlag));
+        QVERIFY(!(undefined.fullId() & CanFrame::RtrIdFlag));
 
         CanFrame dataFrame(CanFrame::DataFrame);
         QVERIFY(dataFrame.isDataFrame());
-        QVERIFY(!dataFrame.isFDFrame());
+        QVERIFY(!dataFrame.isFdFrame());
         QVERIFY(!dataFrame.isErrorFrame());
-        QVERIFY(!dataFrame.isRTRFrame());
+        QVERIFY(!dataFrame.isRtrFrame());
         QVERIFY(!(dataFrame.fullId() & CanFrame::ErrorIdFlag));
-        QVERIFY(!(dataFrame.fullId() & CanFrame::EFFIdFlag));
-        QVERIFY(!(dataFrame.fullId() & CanFrame::RTRIdFlag));
+        QVERIFY(!(dataFrame.fullId() & CanFrame::EffIdFlag));
+        QVERIFY(!(dataFrame.fullId() & CanFrame::RtrIdFlag));
 
-        CanFrame canFDFrame(CanFrame::FDFrame);
-        QVERIFY(!canFDFrame.isDataFrame());
-        QVERIFY(canFDFrame.isFDFrame());
-        QVERIFY(!canFDFrame.isErrorFrame());
-        QVERIFY(!canFDFrame.isRTRFrame());
-        QVERIFY(!(canFDFrame.fullId() & CanFrame::ErrorIdFlag));
-        QVERIFY(!(canFDFrame.fullId() & CanFrame::EFFIdFlag));
-        QVERIFY(!(canFDFrame.fullId() & CanFrame::RTRIdFlag));
+        CanFrame canFdFrame(CanFrame::FdFrame);
+        QVERIFY(!canFdFrame.isDataFrame());
+        QVERIFY(canFdFrame.isFdFrame());
+        QVERIFY(!canFdFrame.isErrorFrame());
+        QVERIFY(!canFdFrame.isRtrFrame());
+        QVERIFY(!(canFdFrame.fullId() & CanFrame::ErrorIdFlag));
+        QVERIFY(!(canFdFrame.fullId() & CanFrame::EffIdFlag));
+        QVERIFY(!(canFdFrame.fullId() & CanFrame::RtrIdFlag));
 
         CanFrame canErrorFrame(CanFrame::ErrorFrame);
         QVERIFY(!canErrorFrame.isDataFrame());
-        QVERIFY(!canErrorFrame.isFDFrame());
+        QVERIFY(!canErrorFrame.isFdFrame());
         QVERIFY(canErrorFrame.isErrorFrame());
-        QVERIFY(!canErrorFrame.isRTRFrame());
+        QVERIFY(!canErrorFrame.isRtrFrame());
         QVERIFY(canErrorFrame.fullId() & CanFrame::ErrorIdFlag);
-        QVERIFY(!(canErrorFrame.fullId() & CanFrame::EFFIdFlag));
-        QVERIFY(!(canErrorFrame.fullId() & CanFrame::RTRIdFlag));
+        QVERIFY(!(canErrorFrame.fullId() & CanFrame::EffIdFlag));
+        QVERIFY(!(canErrorFrame.fullId() & CanFrame::RtrIdFlag));
 
-        CanFrame canRTRFrame(CanFrame::RTRFrame);
-        QVERIFY(!canRTRFrame.isDataFrame());
-        QVERIFY(!canRTRFrame.isFDFrame());
-        QVERIFY(!canRTRFrame.isErrorFrame());
-        QVERIFY(canRTRFrame.isRTRFrame());
-        QVERIFY(!(canRTRFrame.fullId() & CanFrame::ErrorIdFlag));
-        QVERIFY(!(canRTRFrame.fullId() & CanFrame::EFFIdFlag));
-        QVERIFY(canRTRFrame.fullId() & CanFrame::RTRIdFlag);
+        CanFrame canRtrFrame(CanFrame::RtrFrame);
+        QVERIFY(!canRtrFrame.isDataFrame());
+        QVERIFY(!canRtrFrame.isFdFrame());
+        QVERIFY(!canRtrFrame.isErrorFrame());
+        QVERIFY(canRtrFrame.isRtrFrame());
+        QVERIFY(!(canRtrFrame.fullId() & CanFrame::ErrorIdFlag));
+        QVERIFY(!(canRtrFrame.fullId() & CanFrame::EffIdFlag));
+        QVERIFY(canRtrFrame.fullId() & CanFrame::RtrIdFlag);
 }
 
 QTEST_MAIN(tst_CanFrame)

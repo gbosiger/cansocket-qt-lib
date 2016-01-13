@@ -104,7 +104,7 @@ public:
     CanFrameType frameType() const;
 
     bool isDataFrame() const;
-    bool isFDFrame() const;
+    bool isFdFrame() const;
     bool isErrorFrame() const;
     bool isRtrFrame() const;
 
@@ -149,14 +149,13 @@ private:
     friend CANSOCKET_EXPORT QDataStream &operator<<(QDataStream &, const CanFrame &);
     friend CANSOCKET_EXPORT QDataStream &operator>>(QDataStream &, CanFrame &);
 };
+Q_DECLARE_SHARED(CanFrame)
 
 Q_DECLARE_METATYPE(CanFrame)
 Q_DECLARE_METATYPE(CanFrame::CanFrameError)
 Q_DECLARE_METATYPE(CanFrame::CanFrameErrors)
 Q_DECLARE_METATYPE(CanFrame::CanFrameFullIdMask)
 Q_DECLARE_METATYPE(CanFrame::CanFrameFullIdFlag)
-
-Q_DECLARE_SHARED(CanFrame)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameErrors)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameFullIdFlags)
