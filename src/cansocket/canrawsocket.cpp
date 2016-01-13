@@ -29,13 +29,12 @@
 
 #ifdef Q_OS_LINUX
 #   include <sys/socket.h>
+#   include <net/if.h>
 #   include <linux/can.h>
 #   include <linux/can/raw.h>
-#   include <linux/can/error.h>
 #   include <sys/ioctl.h>
 #   include <sys/time.h>
 #   include <sys/types.h>
-#   include <linux/if.h>
 #   include <errno.h>
 #   include <unistd.h>
 #   include <fcntl.h>
@@ -382,7 +381,7 @@ bool CanRawSocketPrivate::setSocketOption(CanRawSocket::CanRawSocketOption optio
         if (value.canConvert<int>()) {
             CanRawSocket::FlexibleDataRateFrames newFlexibleDataRateFrames = value.value<CanRawSocket::FlexibleDataRateFrames>();
 
-#ifndef CANFD_MTU
+#ifndef CAN_RAW_FD_FRAMES
             if (newFlexibleDataRateFrames == CanRawSocket::EnabledFDFrames)
                 break;
 
