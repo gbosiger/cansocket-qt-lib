@@ -21,8 +21,6 @@
 
 #include <CanSocket/canabstractsocket.h>
 #include <CanSocket/canframe.h>
-#include <QtCore/qvariant.h>
-#include <QtCore/qshareddata.h>
 
 class CanRawSocketPrivate;
 class CanRawFilterArrayData;
@@ -118,7 +116,6 @@ private:
 
     friend class CanRawSocketPrivate;
 };
-
 Q_DECLARE_SHARED(CanRawFilterArray)
 
 Q_DECLARE_METATYPE(CanRawFilterArray)
