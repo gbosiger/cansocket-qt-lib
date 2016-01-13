@@ -29,7 +29,7 @@ QDataStream &operator<<(QDataStream &stream, const CanFrame &frame)
     if (!frame.isValid())
         return stream;
 
-    stream << frame.d->fullId
+    stream << frame.d->id
            << frame.d->dlen
            << frame.d->flags
            << frame.d->res0
@@ -44,7 +44,7 @@ QDataStream &operator<<(QDataStream &stream, const CanFrame &frame)
 
 QDataStream &operator>>(QDataStream &stream, CanFrame &frame)
 {
-    stream >> frame.d->fullId
+    stream >> frame.d->id
             >> frame.d->dlen
             >> frame.d->flags
             >> frame.d->res0
@@ -254,25 +254,25 @@ bool CanFrame::operator <(const CanFrame &rhs) const
 
 uint CanFrame::canId() const
 {
-    return d->fullId & CAN_EFF_MASK;
+    return d->id & CAN_EFF_MASK;
 }
 
 void CanFrame::setCanId(uint id)
 {
-    if ((d->fullId & CAN_EFF_MASK) != (id & CAN_EFF_MASK)) {
-        d->fullId &= ~CAN_EFF_MASK;
-        d->fullId |= id & CAN_EFF_MASK;
+    if ((d->id & CAN_EFF_MASK) != (id & CAN_EFF_MASK)) {
+        d->id &= ~CAN_EFF_MASK;
+        d->id |= id & CAN_EFF_MASK;
     }
 }
 
-void CanFrame::setFullId(uint id)
+void CanFrame::setId(uint id)
 {
-    d->fullId = id;
+    d->id = id;
 }
 
-uint CanFrame::fullId() const
+uint CanFrame::id() const
 {
-    return d->fullId;
+    return d->id;
 }
 
 void CanFrame::setFrameFormat(CanFrameFormat format)

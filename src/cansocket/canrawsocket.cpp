@@ -59,6 +59,26 @@
 #define RES0_BYTE 6
 #define RES1_BYTE 7
 
+CanRawFilter::CanRawFilter(uint id, uint mask)
+    : id(id)
+    , mask(mask)
+{
+}
+
+CanRawFilter::CanRawFilter(const CanRawFilter &rhs)
+    : id(rhs.id)
+    , mask(rhs.mask)
+{
+}
+
+void CanRawFilter::setupFilter(uint id, uint mask)
+{
+    this->id = id;
+    this->mask = mask;
+}
+
+
+
 class CanRawFilterArrayData : public QSharedData
 {
 public:
@@ -182,14 +202,14 @@ CanRawFilterArray CanRawSocket::canFilter()
     return socketOption(CanFilterOption).value<CanRawFilterArray>();
 }
 
-void CanRawSocket::setErrorFilterMask(const CanFrameErrors mask)
+void CanRawSocket::setErrorFilterMask(const CanFrame::CanFrameErrors mask)
 {
     setSocketOption(CanRawSocket::ErrorFilterMaskOption, QVariant::fromValue(mask));
 }
 
-CanFrameErrors CanRawSocket::errorFilterMask()
+CanFrame::CanFrameErrors CanRawSocket::errorFilterMask()
 {
-    return socketOption(CanRawSocket::ErrorFilterMaskOption).value<CanFrameErrors>();
+    return socketOption(CanRawSocket::ErrorFilterMaskOption).value<CanFrame::CanFrameErrors>();
 }
 
 void CanRawSocket::setLoopback(Loopback loopback)
@@ -305,8 +325,8 @@ bool CanRawSocketPrivate::setSocketOption(CanRawSocket::CanRawSocketOption optio
         }
         break;
     case CanRawSocket::ErrorFilterMaskOption:
-        if (value.canConvert<CanFrameErrors>()) {
-            CanFrame::CanFrameErrors newErrorFilterMask = value.value<CanFrameErrors>();
+        if (value.canConvert<CanFrame::CanFrameErrors>()) {
+            CanFrame::CanFrameErrors newErrorFilterMask = value.value<CanFrame::CanFrameErrors>();
             if (::setsockopt(descriptor,
                              SOL_CAN_RAW,
                              CAN_RAW_ERR_FILTER,

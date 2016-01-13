@@ -89,7 +89,7 @@ class CanFrameData : public QSharedData
 public:
     CanFrameData()
         : QSharedData()
-        , fullId(0)
+        , id(0)
         , dlen(0)
         , flags(0)
         , res0(0)
@@ -100,7 +100,7 @@ public:
 
     CanFrameData(const CanFrameData &other)
         : QSharedData(other)
-        , fullId(other.fullId)
+        , id(other.id)
         , dlen(other.dlen)
         , flags(other.flags)
         , res0(other.res0)
@@ -114,7 +114,7 @@ public:
     }
 
     inline void clear() {
-        fullId = 0;
+        id = 0;
         dlen = 0;
         flags = 0;
         res0 = 0;
@@ -125,37 +125,37 @@ public:
     inline void setErrFlag(bool err)
     {
         if (err)
-            fullId |= CAN_ERR_FLAG;
+            id |= CAN_ERR_FLAG;
         else
-            fullId &= ~CAN_ERR_FLAG;
+            id &= ~CAN_ERR_FLAG;
     }
 
     inline void setRtrFlag(bool rtr)
     {
         if (rtr)
-            fullId |= CAN_RTR_FLAG;
+            id |= CAN_RTR_FLAG;
         else
-            fullId &= ~CAN_RTR_FLAG;
+            id &= ~CAN_RTR_FLAG;
     }
 
     inline void setEffFlag(bool eff)
     {
         if (eff)
-            fullId |= CAN_EFF_FLAG;
+            id |= CAN_EFF_FLAG;
         else
-            fullId &= ~CAN_EFF_FLAG;
+            id &= ~CAN_EFF_FLAG;
     }
 
     inline bool errFlag() const {
-        return (fullId & CAN_ERR_FLAG) != 0;
+        return (id & CAN_ERR_FLAG) != 0;
     }
 
     inline bool rtrFlag() const {
-        return (fullId & CAN_RTR_FLAG) != 0;
+        return (id & CAN_RTR_FLAG) != 0;
     }
 
     inline bool effFlag() const {
-        return (fullId & CAN_EFF_FLAG) != 0;
+        return (id & CAN_EFF_FLAG) != 0;
     }
 
     inline bool isDataFrame() const {
@@ -167,14 +167,20 @@ public:
                 && !rtrFlag());
     }
 
+
     inline bool isFdFrame() const {
+#ifdef CANFD_MTU
         return (dlen <= CANFD_MAX_DLEN
                 && res0 == res0FromCanMtu(CANFD_MTU)
                 && res1 == res1FromCanMtu(CANFD_MTU)
                 && data.size() == CANFD_MAX_DLEN
                 && !errFlag()
                 && !rtrFlag());
+#else
+        return false;
+#endif //CANFD_MTU
     }
+
 
     inline bool isErrorFrame() const {
         return (dlen == CAN_MAX_DLEN
@@ -212,8 +218,9 @@ public:
             setErrFlag(false);
     }
 
-    inline void toFdFrame() {
 
+    inline void toFdFrame() {
+#ifdef CANFD_MTU
         if (dlen > CANFD_MAX_DLEN)
             dlen = CANFD_MAX_DLEN;
 
@@ -226,7 +233,11 @@ public:
             setRtrFlag(false);
         else if (errFlag())
             setErrFlag(false);
+#else
+        return;
+#endif //CANFD_MTU
     }
+
 
     inline void toErrorFrame() {
 
@@ -264,7 +275,7 @@ public:
             setErrFlag(false);
     }
 
-    uint fullId;
+    uint id;
     quint8 dlen;
     quint8 flags;
     quint8 res0;

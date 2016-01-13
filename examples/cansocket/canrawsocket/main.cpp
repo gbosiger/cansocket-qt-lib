@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
     new CanRawReader(canRawSocket, &coreApplication);
 
     CanRawFilter rawFilter;
-    rawFilter.setFullId(0x1ab);
-    rawFilter.setFullIdMask(CanFrame::EffIdFlag | CanFrame::RtrIdFlag | CanFrame::SffIdMask);
+    rawFilter.setFilterId(0x1ab);
+    rawFilter.setFilterMask(CanFrame::EffIdFlag | CanFrame::RtrIdFlag | CanFrame::SffIdMask);
 
     CanRawFilterArray rawFilterArray;
     rawFilterArray.append(rawFilter);

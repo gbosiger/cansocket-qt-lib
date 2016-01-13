@@ -38,6 +38,7 @@ class CanFrameData;
 
 class CANSOCKET_EXPORT CanFrame
 {
+    Q_GADGET
 public:
     enum CanFrameType {
         DataFrame,
@@ -47,6 +48,7 @@ public:
 
         UnknownFrame = -1,
     };
+    Q_ENUM(CanFrameType)
 
     enum CanFrameError {
         NoError = 0x000,
@@ -64,25 +66,30 @@ public:
 
         AllCanFrameErrors = 0x1FFFFFFF,
     };
+    Q_FLAG(CanFrameError)
     Q_DECLARE_FLAGS(CanFrameErrors, CanFrameError)
 
     enum CanFrameFormat {
         StandardFrameFormat,
         ExtendedFrameFormat
     };
+    Q_ENUM(CanFrameFormat)
 
-    enum CanFrameFullIdMask {
+    enum CanFrameCanIdMask {
         SffIdMask = 0x000007FF,
         EffIdMask = 0x1FFFFFFF
     };
-    Q_DECLARE_FLAGS(CanFrameFullIdMasks, CanFrameFullIdMask)
+    Q_ENUM(CanFrameCanIdMask)
 
-    enum CanFrameFullIdFlag {
+    Q_DECLARE_FLAGS(CanFrameCanIdMasks, CanFrameCanIdMask)
+
+    enum CanFrameIdFlag {
         EffIdFlag = 0x80000000,
         RtrIdFlag = 0x40000000,
         ErrorIdFlag = 0x20000000
     };
-    Q_DECLARE_FLAGS(CanFrameFullIdFlags, CanFrameFullIdFlag)
+    Q_FLAG(CanFrameIdFlag)
+    Q_DECLARE_FLAGS(CanFrameIdFlags, CanFrameIdFlag)
 
     CanFrame();
     CanFrame(CanFrameType type);
@@ -121,8 +128,8 @@ public:
     void setCanId(uint canId);
     uint canId() const;
 
-    void setFullId(uint fullId);
-    uint fullId() const;
+    void setId(uint id);
+    uint id() const;
 
     void setFrameFormat(CanFrameFormat format);
     CanFrameFormat frameFormat() const;
@@ -152,15 +159,9 @@ private:
 Q_DECLARE_SHARED(CanFrame)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameErrors)
-Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameFullIdMasks)
-Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameFullIdFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameCanIdMasks)
+Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameIdFlags)
 
-Q_DECLARE_METATYPE(CanFrame)
-Q_DECLARE_METATYPE(CanFrame::CanFrameError)
 Q_DECLARE_METATYPE(CanFrame::CanFrameErrors)
-
-
-
-
 
 #endif // CANFRAME_H

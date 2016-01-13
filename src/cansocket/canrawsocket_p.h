@@ -41,7 +41,7 @@ public:
    int msgSize() const Q_DECL_OVERRIDE;
 
    CanRawFilterArray canFilter;
-   CanFrameErrors errorFilterMask;
+   CanFrame::CanFrameErrors errorFilterMask;
    CanRawSocket::Loopback loopback;
    CanRawSocket::ReceiveOwnMessages receiveOwnMessages;
    CanRawSocket::FlexibleDataRateFrames flexibleDataRateFrames;

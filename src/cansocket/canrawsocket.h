@@ -25,51 +25,33 @@
 class CanRawSocketPrivate;
 class CanRawFilterArrayData;
 
-typedef CanFrame::CanFrameErrors CanFrameErrors;
-
 class CANSOCKET_EXPORT CanRawFilter
 {
 public:
-    typedef CanFrame::CanFrameFormat CanFrameFormat;
 
-    CanRawFilter(uint fullId = 0, uint fullIdMask = 0)
-    {
-        setupFilter(fullId, fullIdMask);
-    }
+    CanRawFilter(uint id = 0, uint mask = 0);
 
-    CanRawFilter(const CanRawFilter &rhs)
-        : m_fullId(rhs.fullId())
-        , m_fullIdMask(rhs.fullIdMask())
-    {
-    }
+    CanRawFilter(const CanRawFilter &rhs);
 
-    inline void setupFilter(uint fullId, uint fullIdMask)
-    {
-        m_fullId = fullId;
-        m_fullIdMask = fullIdMask;
-    }
-
-//    inline void setupFilter(quint32 canId, quint32 mask,
+    void setupFilter(uint id, uint mask);
+//    inline void setupFilter(qquint3232 canId, qquint3232 mask,
 //                            CanFrame::CanFrameFormat format = CanFrame::StandardFrameFormat,
 //                            CanFrame::CanFrameType type = CanFrame::DataFrame);
 
+    inline void setFilterId(uint id) { this->id = id; }
+    inline uint filterId() const { return id; }
 
-    inline void setFullId(uint id) { m_fullId = id; }
-    inline uint fullId() const { return m_fullId; }
+    inline void setFilterMask(uint mask) { this->mask = mask; }
+    inline uint filterMask() const { return mask; }
 
-    inline void setFullIdMask(uint mask) { m_fullIdMask = mask; }
-    inline uint fullIdMask() const { return m_fullIdMask; }
-
-    inline bool operator ==(const CanRawFilter &rhs) const
-    {
-        return (m_fullId == rhs.m_fullId) && (m_fullIdMask == rhs.m_fullIdMask);
+    inline bool operator ==(const CanRawFilter &rhs) const {
+        return (id == rhs.id) && (mask == rhs.mask);
     }
-
     inline bool operator !=(const CanRawFilter &rhs) const { return !operator==(rhs); }
 
 private:
-    uint m_fullId;
-    uint m_fullIdMask;
+    quint32 id;
+    quint32 mask;
 };
 Q_DECLARE_METATYPE(CanRawFilter)
 
@@ -125,12 +107,10 @@ class CANSOCKET_EXPORT CanRawSocket : public CanAbstractSocket
     Q_OBJECT
 
     Q_PROPERTY(CanRawFilterArray canFilter READ canFilter WRITE setCanFilter NOTIFY canFilterChanged)
-    Q_PROPERTY(CanFrameErrors errorFilterMask READ errorFilterMask WRITE setErrorFilterMask NOTIFY errorFilterMaskChanged)
+    Q_PROPERTY(CanFrame::CanFrameErrors errorFilterMask READ errorFilterMask WRITE setErrorFilterMask NOTIFY errorFilterMaskChanged)
     Q_PROPERTY(Loopback loopback READ loopback WRITE setLoopback NOTIFY loopbackChanged)
     Q_PROPERTY(ReceiveOwnMessages receiveOwnMessages READ receiveOwnMessages WRITE setReceiveOwnMessages NOTIFY receiveOwnMessagesChanged)
     Q_PROPERTY(FlexibleDataRateFrames flexibleDataRateFrames READ flexibleDataRateFrames WRITE setFlexibleDataRateFrames NOTIFY flexibleDataRateFramesChanged)
-
-    Q_ENUMS(CanRawSocketOption Loopback ReceiveOwnMessages FlexibleDataRateFrames)
 
 public:
     enum CanRawSocketOption {
@@ -140,6 +120,7 @@ public:
         ReceiveOwnMessagesOption,
         FlexibleDataRateFramesOption
     };
+    Q_ENUM(CanRawSocketOption)
 
     enum Loopback {
         DisabledLoopback = 0,
@@ -147,6 +128,7 @@ public:
 
         UndefinedLoopback = -1
     };
+    Q_ENUM(Loopback)
 
     enum ReceiveOwnMessages {
         DisabledOwnMessages = 0,
@@ -154,6 +136,7 @@ public:
 
         UndefinedOwnMessages = -1
     };
+    Q_ENUM(ReceiveOwnMessages)
 
     enum FlexibleDataRateFrames {
         DisabledFDFrames = 0,
@@ -161,6 +144,7 @@ public:
 
         UndefinedFDFrames = -1
     };
+    Q_ENUM(FlexibleDataRateFrames)
 
     explicit CanRawSocket(QObject *parent = Q_NULLPTR);
     virtual ~CanRawSocket();
@@ -171,8 +155,8 @@ public:
     void setCanFilter(const CanRawFilterArray &filter);
     CanRawFilterArray canFilter();
 
-    void setErrorFilterMask(const CanFrameErrors mask);
-    CanFrameErrors errorFilterMask();
+    void setErrorFilterMask(const CanFrame::CanFrameErrors mask);
+    CanFrame::CanFrameErrors errorFilterMask();
 
     void setLoopback(Loopback loopback);
     Loopback loopback();
@@ -194,11 +178,5 @@ private:
     Q_DISABLE_COPY(CanRawSocket)
     Q_DECLARE_PRIVATE(CanRawSocket)
 };
-
-Q_DECLARE_METATYPE(CanRawSocket::Loopback)
-Q_DECLARE_METATYPE(CanRawSocket::ReceiveOwnMessages)
-Q_DECLARE_METATYPE(CanRawSocket::FlexibleDataRateFrames)
-
-
 
 #endif // CANRAWSOCKET_H
