@@ -52,12 +52,12 @@ public:
 
     enum CanFrameError {
         NoError = 0x000,
-        TXTimeoutError = 0x001,
+        TxTimeoutError = 0x001,
         LostArbitrationError = 0x002,
         ControllerProblemsError = 0x004,
         ProtocolViolationsError = 0x008,
         TransceiverStatusError = 0x010,
-        NoACKOnTransmissionError = 0x020,
+        NoAckOnTransmissionError = 0x020,
         BusOffError = 0x040,
         BusError = 0x080,
         ControllerRestartedError = 0x100,
@@ -75,13 +75,13 @@ public:
     };
     Q_ENUM(CanFrameFormat)
 
-    enum CanFrameCanIdMask {
+    enum CanFrameIdMask {
         SffIdMask = 0x000007FF,
         EffIdMask = 0x1FFFFFFF
     };
-    Q_ENUM(CanFrameCanIdMask)
+    Q_ENUM(CanFrameIdMask)
 
-    Q_DECLARE_FLAGS(CanFrameCanIdMasks, CanFrameCanIdMask)
+    Q_DECLARE_FLAGS(CanFrameIdMasks, CanFrameIdMask)
 
     enum CanFrameIdFlag {
         EffIdFlag = 0x80000000,
@@ -159,7 +159,7 @@ private:
 Q_DECLARE_SHARED(CanFrame)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameErrors)
-Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameCanIdMasks)
+Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameIdMasks)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameIdFlags)
 
 Q_DECLARE_METATYPE(CanFrame::CanFrameErrors)

@@ -15,6 +15,8 @@ Project is in transition from pre-alpha to alpha stage. All functionalities of R
 
 It must be also said that a QSerialBus module (https://github.com/qtproject/qtserialbus) with QtCanBus classes is released under Qt (as a Technology Preview). The cansocket-qt-lib project was developed independently and its main design was conceived before the public release of QSerialBus module, thus API and the implementation are not the same. In fact credit goes to developers of QtNetwork (https://github.com/qtproject/qtbase/tree/dev/src/network/socket) and QtSerialPort (https://github.com/qtproject/qtserialport) modules, which were used for reference of how to implement a new IO device in Qt properly.
 
+Qt 5.5 or higher is needed, although with small changes odler Qt5 versions could also be used - mostly changing Q_ENUM with Q_ENUS and also declaring given with Q_DECLARE_METATYPE.
+
 More project documentation and information will hopefully be available soon. In case of any questions or desire to participate do not hesitate to contact me.
 
 ## Example 
@@ -37,15 +39,15 @@ cangen -v vcan0
 
 Code snippet of the example for quick demonstaration:
 ```
-    QString interfaceName = "vcan0";
-    char dataToSend[] = "\x11\x22\x33\x44\x55\xAA\xFF";
+    String interfaceName = "vcan0";
+    char dataToSend[] = "\x11\x22\x33\x44\x55\xAA\xBB\xCC";
 
     CanRawSocket *canRawSocket = new CanRawSocket(&coreApplication);
     new CanRawReader(canRawSocket, &coreApplication);
 
     CanRawFilter rawFilter;
-    rawFilter.setFullId(0x1ab);
-    rawFilter.setFullIdMask(CanFrame::EFFIdFlag | CanFrame::RTRIdFlag | CanFrame::SFFIdMask);
+    rawFilter.setFilterId(0x1ab);
+    rawFilter.setFilterMask(CanFrame::EffIdFlag | CanFrame::RtrIdFlag | CanFrame::SffIdMask);
 
     CanRawFilterArray rawFilterArray;
     rawFilterArray.append(rawFilter);
@@ -62,7 +64,7 @@ Code snippet of the example for quick demonstaration:
     dataStream.setDevice(canRawSocket);
 
     CanFrame canFrame(CanFrame::DataFrame);
-    canFrame.setId(0x1ab);
+    canFrame.setCanId(0x1ab);
     canFrame.setDataLength(8);
     canFrame.setData(dataToSend);
 

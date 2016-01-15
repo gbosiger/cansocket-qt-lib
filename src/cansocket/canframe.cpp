@@ -357,7 +357,7 @@ CanFrame::CanFrameErrors CanFrame::error() const
         return errors;
 
     if (canId() & CAN_ERR_TX_TIMEOUT)
-        errors |= TXTimeoutError;
+        errors |= TxTimeoutError;
     if (canId() & CAN_ERR_LOSTARB)
         errors |= LostArbitrationError;
     if (canId() & CAN_ERR_CRTL)
@@ -367,7 +367,7 @@ CanFrame::CanFrameErrors CanFrame::error() const
     if (canId() & CAN_ERR_TRX)
         errors |= TransceiverStatusError;
     if (canId() & CAN_ERR_ACK)
-        errors |= NoACKOnTransmissionError;
+        errors |= NoAckOnTransmissionError;
     if (canId() & CAN_ERR_BUSOFF)
         errors |= BusOffError;
     if (canId() & CAN_ERR_BUSERROR)
