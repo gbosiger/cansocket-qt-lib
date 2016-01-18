@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     canRawSocket->connectToInterface(interfaceName);
     canRawSocket->setCanFilter(rawFilterArray);
-    canRawSocket->setFlexibleDataRateFrames(CanRawSocket::EnabledFDFrames);
+    canRawSocket->setFlexibleDataRateFrames(CanRawSocket::EnabledFdFrames);
     canRawSocket->setErrorFilterMask(CanFrame::AllCanFrameErrors);
     canRawSocket->setReceiveOwnMessages(CanRawSocket::EnabledOwnMessages);
     canRawSocket->setLoopback(CanRawSocket::EnabledLoopback);
