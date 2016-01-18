@@ -740,34 +740,3 @@ qint64 CanAbstractSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
     Q_UNUSED(maxSize);
     return -1;
 }
-
-//CanRawFilter::CanRawFilter(quint32 id, quint32 mask)
-//    : m_id(id)
-//    , m_mask(mask)
-//{
-//}
-
-//quint32 CanRawFilter::id() const
-//{
-//    return m_id;
-//}
-
-//void CanRawFilter::setId(quint32 id)
-//{
-//    m_id = id;
-//}
-
-//quint32 CanRawFilter::mask() const
-//{
-//    return m_mask;
-//}
-
-//void CanRawFilter::setMask(quint32 mask)
-//{
-//    m_mask = mask;
-//}
-
-//bool CanRawFilter::operator ==(const CanRawFilter &rhs) const
-//{
-//    return (m_id == rhs.m_id && m_mask == )
-//}
