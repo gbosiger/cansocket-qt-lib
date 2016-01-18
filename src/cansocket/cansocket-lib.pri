@@ -18,8 +18,10 @@ SOURCES += \
 
 config_isotp {
     PUBLIC_HEADERS += $$PWD/canisotpsocket.h
+    PRIVATE_HEADERS += $$PWD/canisotpsocket_p.h
+    SOURCES += $$PWD/canisotpsocket.cpp
 }
 
-HEADERS += $$PUBLIC_HEADERS $$PRIVATE_HEADERS \
 
+HEADERS += $$PUBLIC_HEADERS $$PRIVATE_HEADERS \
 
