@@ -15,7 +15,7 @@ Project is in transition from pre-alpha to alpha stage. All functionalities of R
 
 It must be also said that a QSerialBus module (https://github.com/qtproject/qtserialbus) with QtCanBus classes is released under Qt (as a Technology Preview). The cansocket-qt-lib project was developed independently and its main design was conceived before the public release of QSerialBus module, thus API and the implementation are not the same. In fact credit goes to developers of QtNetwork (https://github.com/qtproject/qtbase/tree/dev/src/network/socket) and QtSerialPort (https://github.com/qtproject/qtserialport) modules, which were used for reference of how to implement a new IO device in Qt properly.
 
-Qt 5.5 or higher is needed, although with small changes also odler Qt5 versions work.
+Qt 5.5.1 or higher is required, although with small changes also odler Qt5 versionss work.
 
 More project documentation and information will hopefully be available soon. In case of any questions or desire to participate do not hesitate to contact me.
 
