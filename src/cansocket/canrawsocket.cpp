@@ -246,7 +246,7 @@ CanRawSocketPrivate::CanRawSocketPrivate()
     , errorFilterMask(CanFrame::NoError)
     , loopback(CanRawSocket::EnabledLoopback)
     , receiveOwnMessages(CanRawSocket::DisabledOwnMessages)
-    , flexibleDataRateFrames(CanRawSocket::DisabledFDFrames)
+    , flexibleDataRateFrames(CanRawSocket::DisabledFdFrames)
 {
 }
 
@@ -382,7 +382,7 @@ bool CanRawSocketPrivate::setSocketOption(CanRawSocket::CanRawSocketOption optio
             CanRawSocket::FlexibleDataRateFrames newFlexibleDataRateFrames = value.value<CanRawSocket::FlexibleDataRateFrames>();
 
 #ifndef CAN_RAW_FD_FRAMES
-            if (newFlexibleDataRateFrames == CanRawSocket::EnabledFDFrames)
+            if (newFlexibleDataRateFrames == CanRawSocket::EnabledFdFrames)
                 break;
 
             return true;
@@ -526,7 +526,7 @@ qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
 #ifdef CANFD_MTU
         else if (res0 == res0FromCanMtu(CANFD_MTU)
                  && res1 == res1FromCanMtu(CANFD_MTU)
-                 && flexibleDataRateFrames == CanRawSocket::EnabledFDFrames) {
+                 && flexibleDataRateFrames == CanRawSocket::EnabledFdFrames) {
             //fd frame can only be written in fd mode
             frameSize = CANFD_MTU;
         }
@@ -566,7 +566,7 @@ qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
 int CanRawSocketPrivate::msgSize() const
 {
 #ifdef CANFD_MTU
-    if (flexibleDataRateFrames == CanRawSocket::EnabledFDFrames)
+    if (flexibleDataRateFrames == CanRawSocket::EnabledFdFrames)
         return CANFD_MTU;
     else
 #endif

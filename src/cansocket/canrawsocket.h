@@ -19,6 +19,7 @@
 #ifndef CANRAWSOCKET_H
 #define CANRAWSOCKET_H
 
+#include <CanSocket/cansocketglobal.h>
 #include <CanSocket/canabstractsocket.h>
 #include <CanSocket/canframe.h>
 
@@ -139,10 +140,10 @@ public:
     Q_ENUM(ReceiveOwnMessages)
 
     enum FlexibleDataRateFrames {
-        DisabledFDFrames = 0,
-        EnabledFDFrames = 1,
+        DisabledFdFrames = 0,
+        EnabledFdFrames = 1,
 
-        UndefinedFDFrames = -1
+        UndefinedFdFrames = -1
     };
     Q_ENUM(FlexibleDataRateFrames)
 
