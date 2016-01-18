@@ -101,9 +101,9 @@ public:
 private:
     friend class CanIsoTpSocketPrivate;
 
-    CanIsoTpFlowControlOptionsPrivate d;
+    CanIsoTpFlowControlOptionsPrivate *d;
 };
-Q_DECLARE_METATYPE(FcFrameOptions)
+Q_DECLARE_METATYPE(CanIsoTpFlowControlOptions)
 
 
 class CANSOCKET_EXPORT CanIsoTpLinkLayerOptions
@@ -115,7 +115,7 @@ public:
         DataFrameMtu = 16,
         FdFrameMtu = 72
     };
-    Q_ENUM(MtuOpton)
+    Q_ENUM(MtuOption)
 
     enum TxDataLengthOption {
         TxDlen8 = 8,
@@ -138,19 +138,27 @@ public:
     void setTxDataLength(TxDataLengthOption dlen);
     TxDataLengthOption txDataLength() const;
 
-    void setTxFdFlags(CanFrame::FdFlags flags);
-    CanFrame::FdFlags txFdFlags();
+    void setTxFdFrameFlags(CanFrame::CanFdFrameFlags flags);
+    CanFrame::CanFdFrameFlags txFdFrameFlags();
 
 private:
     friend class CanIsoTpSocketPrivate;
     CanIsoTpLinkLayerOptions *d;
 };
-Q_DECLARE_METATYPE(LinkLayerOptions)
+Q_DECLARE_METATYPE(CanIsoTpLinkLayerOptions)
 
 
 class CANSOCKET_EXPORT CanIsoTpSocket : public CanAbstractSocket
 {
     Q_OBJECT
+
+    Q_PROPERTY(uint txId READ txId NOTIFY txIdChanged)
+    Q_PROPERTY(uint rxId READ rxId NOTIFY rxIdChanged)
+    Q_PROPERTY(CanIsoTpOptions isoTpOptions READ isoTpOptions WRITE setIsoTpOptions NOTIFY isoTpOptionsChanged)
+    Q_PROPERTY(CanIsoTpFlowControlOptions flowControlOptions READ flowControlOptions WRITE setFlowControlOptions NOTIFY flowControlOptionsChanged)
+    Q_PROPERTY(uint txMinSepTime READ txMinSepTime WRITE setTxMinSepTime NOTIFY txMinSepTimeChanged)
+    Q_PROPERTY(uint rxMinSepTime READ rxMinSepTime WRITE setRxMinSepTime NOTIFY rxMinSepTimeChanged)
+    Q_PROPERTY(CanIsoTpLinkLayerOptions linkLayerOptions READ linkLayerOptions WRITE setLinkLayerOptions NOTIFY linkLayerOptionsChanged)
 
 public:
     enum CanIsoTpSocketOption {
@@ -167,7 +175,7 @@ public:
     explicit CanIsoTpSocket(QObject *parent = Q_NULLPTR);
     virtual ~CanIsoTpSocket();
 
-    connectToInterface(const QString &interfaceName,
+    bool connectToInterface(const QString &interfaceName,
                        uint txId,
                        uint rxId,
                        OpenMode mode);
@@ -197,7 +205,9 @@ Q_SIGNALS:
     void txIdChanged();
     void rxIdChanged();
     void isoTpOptionsChanged();
-    void fcFrameOptionsChanged();
+    void flowControlOptionsChanged();
+    void txMinSepTimeChanged();
+    void rxMinSepTimeChanged();
     void linkLayerOptionsChanged();
 
 private:

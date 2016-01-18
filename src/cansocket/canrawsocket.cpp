@@ -27,20 +27,16 @@
 #include <QtCore/qsocketnotifier.h>
 #include <QtCore/qmap.h>
 
-#ifdef Q_OS_LINUX
-#   include <sys/socket.h>
-#   include <net/if.h>
-#   include <linux/can.h>
-#   include <linux/can/raw.h>
-#   include <sys/ioctl.h>
-#   include <sys/time.h>
-#   include <sys/types.h>
-#   include <errno.h>
-#   include <unistd.h>
-#   include <fcntl.h>
-#else
-#   error Unsupported OS
-#endif
+#include <sys/socket.h>
+#include <net/if.h>
+#include <linux/can.h>
+#include <linux/can/raw.h>
+#include <sys/ioctl.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 #ifndef CAN_MTU
 #   define CAN_MTU sizeof(can_frame)

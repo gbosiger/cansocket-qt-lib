@@ -313,6 +313,20 @@ int CanFrame::dataLength() const
     return d->dlen;
 }
 
+bool CanFrame::setFdFrameFlags(CanFdFrameFlags flags)
+{
+    if (frameType() != FdFrame)
+        return false;
+
+    d->flags = static_cast<quint8>(flags);
+    return true;
+}
+
+CanFrame::CanFdFrameFlags CanFrame::fdFrameFlags() const
+{
+    return static_cast<CanFrame::CanFdFrameFlags>(d->flags);
+}
+
 void CanFrame::setData(const char *data, int len)
 {
     if (len == -1 || len > maxDataLength())

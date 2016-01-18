@@ -91,6 +91,14 @@ public:
     Q_FLAG(CanFrameIdFlag)
     Q_DECLARE_FLAGS(CanFrameIdFlags, CanFrameIdFlag)
 
+    enum CanFdFrameFlag {
+        NoFdFrameFlag = 0x00,
+        BitRateSwitchFlag = 0x01,
+        ErrorStateIndicatorFlag = 0x02
+    };
+    Q_FLAG(CanFdFrameFlag)
+    Q_DECLARE_FLAGS(CanFdFrameFlags, CanFdFrameFlag)
+
     CanFrame();
     CanFrame(CanFrameType type);
     CanFrame(const CanFrame &rhs);
@@ -137,6 +145,9 @@ public:
     bool setDataLength(int bytes);
     int dataLength() const;
 
+    bool setFdFrameFlags(CanFdFrameFlags flags);
+    CanFdFrameFlags fdFrameFlags() const;
+
     void setData(const char* data, int len = -1);
 
     char *data();
@@ -161,6 +172,7 @@ Q_DECLARE_SHARED(CanFrame)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameErrors)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameIdMasks)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFrameIdFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(CanFrame::CanFdFrameFlags)
 
 Q_DECLARE_METATYPE(CanFrame)
 Q_DECLARE_METATYPE(CanFrame::CanFrameErrors)

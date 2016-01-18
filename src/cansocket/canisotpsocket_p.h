@@ -33,7 +33,7 @@ public:
     bool connectToInterface(const QString &interfaceName) Q_DECL_OVERRIDE;
 
     bool setSocketOption(CanIsoTpSocket::CanIsoTpSocketOption option, const QVariant &value);
-    QVariant socketOption(CanIsoTpSocket::CanIsoTpSocket option);
+    QVariant socketOption(CanIsoTpSocket::CanIsoTpSocketOption option);
 
     qint64 readFromSocket(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
     qint64 writeToSocket(const char *data, qint64 maxSize) Q_DECL_OVERRIDE;

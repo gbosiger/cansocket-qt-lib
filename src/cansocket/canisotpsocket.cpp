@@ -16,13 +16,43 @@
 * along with this library. If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "canabstractsocket_p.h"
 #include "canisotpsocket.h"
+#include "canabstractsocket.h"
+#include "canabstractsocket_p.h"
+#include "canisotpsocket_p.h"
+
+#include <sys/socket.h>
+#include <net/if.h>
+#include <linux/can.h>
+#include <linux/can/isotp.h>
+#include <sys/ioctl.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 struct CanIsoTpOptionsPrivate {
-    CanIsoTpOptionsPrivate();
+    CanIsoTpOptionsPrivate()
+        : flags(CAN_ISOTP_DEFAULT_FLAGS)
+        , frameTxTime(CAN_ISOTP_DEFAULT_FRAME_TXTIME)
+        , extAddress(CAN_ISOTP_DEFAULT_EXT_ADDRESS)
+        , txPadContent(CAN_ISOTP_DEFAULT_PAD_CONTENT)
+        , rxPadContent(CAN_ISOTP_DEFAULT_PAD_CONTENT)
+        , rxExtAddress(CAN_ISOTP_DEFAULT_EXT_ADDRESS)
+    {
+    }
 
-    inline bool operator ==(const CanIsoTpOptionsPrivate &rhs) const;
+    inline bool operator ==(const CanIsoTpOptionsPrivate &rhs) const
+    {
+        return (flags == rhs.flags
+                && frameTxTime == rhs.frameTxTime
+                && extAddress == rhs.extAddress
+                && txPadContent == rhs.txPadContent
+                && rxPadContent == rhs.rxPadContent
+                && rxExtAddress == rhs.rxExtAddress);
+    }
+
     inline bool operator !=(const CanIsoTpOptionsPrivate &rhs) const { return !operator==(rhs); }
 
     quint32 flags;
@@ -34,9 +64,20 @@ struct CanIsoTpOptionsPrivate {
 };
 
 struct CanIsoTpFlowControlOptionsPrivate {
-    CanIsoTpFlowControlOptionsPrivate();
+    CanIsoTpFlowControlOptionsPrivate()
+        : blockSize(CAN_ISOTP_DEFAULT_RECV_BS)
+        , stMin(CAN_ISOTP_DEFAULT_RECV_STMIN)
+        , wftMax(CAN_ISOTP_DEFAULT_RECV_WFTMAX)
+    {
+    }
 
-    inline bool operator ==(const CanIsoTpFlowControlOptionsPrivate &rhs) const;
+    inline bool operator ==(const CanIsoTpFlowControlOptionsPrivate &rhs) const
+    {
+        return (blockSize == rhs.blockSize
+                && stMin == rhs.stMin
+                && wftMax == rhs.wftMax);
+    }
+
     inline bool operator !=(const CanIsoTpFlowControlOptionsPrivate &rhs) const { return !operator==(rhs); }
 
     quint8 blockSize;
@@ -45,12 +86,32 @@ struct CanIsoTpFlowControlOptionsPrivate {
 };
 
 struct CanIsoTpLinkLayerOptionsPrivate {
-    CanIsoTpLinkLayerOptionsPrivate();
+    CanIsoTpLinkLayerOptionsPrivate()
+        : mtu(CAN_ISOTP_DEFAULT_LL_MTU)
+        , txDlen(CAN_ISOTP_DEFAULT_LL_TX_DL)
+        , txFdFlags(CAN_ISOTP_DEFAULT_LL_TX_FLAGS)
+    {
+    }
 
-    inline bool operator ==(const CanIsoTpLinkLayerOptionsPrivate &rhs) const;
+    inline bool operator ==(const CanIsoTpLinkLayerOptionsPrivate &rhs) const {
+        return (mtu == rhs.mtu
+                && txDlen == rhs.txDlen
+                && txFdFlags == rhs.txFdFlags);
+    }
     inline bool operator !=(const CanIsoTpLinkLayerOptionsPrivate &rhs) const { return !operator==(rhs); }
 
     quint8 mtu;
     quint8 txDlen;
     quint8 txFdFlags;
 };
+
+CanIsoTpSocket::CanIsoTpSocket(QObject *parent)
+    : CanAbstractSocket(IsoTpSocket, *new CanIsoTpSocketPrivate, parent)
+{
+}
+
+CanIsoTpSocket::~CanIsoTpSocket()
+{
+}
+
+
