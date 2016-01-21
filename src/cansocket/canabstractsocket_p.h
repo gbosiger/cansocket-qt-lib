@@ -77,7 +77,7 @@ public:
     bool completeAsyncWrite();
 
     bool isReadNotificationEnabled() const;
-    void setReadNotficationEnabled(bool enable);
+    void setReadNotificationEnabled(bool enable);
     bool isWriteNotificationEnabled() const;
     void setWriteNotificationEnabled(bool enable);
 

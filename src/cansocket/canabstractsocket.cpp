@@ -94,7 +94,7 @@ bool CanAbstractSocket::connectToInterface(const QString &interfaceName, OpenMod
    }
 
    if (mode & QIODevice::ReadOnly)
-       d->setReadNotficationEnabled(true);
+       d->setReadNotificationEnabled(true);
 
    setSocketState(ConnectedState);
 
@@ -236,16 +236,22 @@ bool CanAbstractSocket::waitForBytesWritten(int msecs)
     return d->waitForBytesWritten(msecs);
 }
 
-
-// This function does not really read anything, as we use QIODevicePrivate's
-// buffer. The buffer will be read inside of QIODevice before this
-// method will be called.
 qint64 CanAbstractSocket::readData(char *data, qint64 maxSize)
 {
-    Q_UNUSED(data);
-    Q_UNUSED(maxSize);
+    Q_D(CanAbstractSocket);
 
-    return qint64(0);
+    if (d->readBufferMaxSize && !d->isReadNotificationEnabled())
+        d->setReadNotificationEnabled(true);
+    else if (d->readBufferMaxSize == 0)
+        return d->readFromSocket(data, maxSize);
+
+    if (!maxSize)
+        return 0;
+
+    if (d->state == ConnectedState)
+        return 0; // read more later
+
+    return -1; // data can't be read
 }
 
 qint64 CanAbstractSocket::readLineData(char *data, qint64 maxSize)
@@ -581,7 +587,7 @@ bool CanAbstractSocketPrivate::readNotification()
         if (error.errorCode != CanAbstractSocket::SocketResourceError)
             error.errorCode = CanAbstractSocket::ReadError;
         else
-            setReadNotficationEnabled(false);
+            setReadNotificationEnabled(false);
         setError(error);
         buffer.chop(bytesToRead);
         return false;
@@ -593,7 +599,7 @@ bool CanAbstractSocketPrivate::readNotification()
 
     // If read buffer is full, disable the read notifier.
     if (readBufferMaxSize && buffer.size() > (readBufferMaxSize - expectedDataSize) )
-        setReadNotficationEnabled(false);
+        setReadNotificationEnabled(false);
 
     // only emit readyRead() when not recursing, and only if there is data available
     const bool hasData = newBytes > 0;
@@ -659,7 +665,7 @@ bool CanAbstractSocketPrivate::isReadNotificationEnabled() const
     return readNotifier && readNotifier->isEnabled();
 }
 
-void CanAbstractSocketPrivate::setReadNotficationEnabled(bool enable)
+void CanAbstractSocketPrivate::setReadNotificationEnabled(bool enable)
 {
     Q_Q(CanAbstractSocket);
 
