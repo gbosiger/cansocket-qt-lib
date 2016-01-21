@@ -242,16 +242,11 @@ qint64 CanAbstractSocket::readData(char *data, qint64 maxSize)
 
     if (d->readBufferMaxSize && !d->isReadNotificationEnabled())
         d->setReadNotificationEnabled(true);
-    else if (d->readBufferMaxSize == 0)
-        return d->readFromSocket(data, maxSize);
 
-    if (!maxSize)
-        return 0;
+    if (d->state != ConnectedState)
+        return -1;
 
-    if (d->state == ConnectedState)
-        return 0; // read more later
-
-    return -1; // data can't be read
+    return 0; // read more later
 }
 
 qint64 CanAbstractSocket::readLineData(char *data, qint64 maxSize)
