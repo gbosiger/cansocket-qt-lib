@@ -23,6 +23,7 @@
 #include <QString>
 
 #include <CanSocket/canrawsocket.h>
+#include <CanSocket/canframe.h>
 #include "canrawreader.h"
 
 QT_USE_NAMESPACE
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     rawFilterArray.append(rawFilter);
 
     canRawSocket->connectToInterface(interfaceName);
-    canRawSocket->setCanFilter(rawFilterArray);
+//    canRawSocket->setCanFilter(rawFilterArray);
     canRawSocket->setFlexibleDataRateFrames(CanRawSocket::EnabledFdFrames);
     canRawSocket->setErrorFilterMask(CanFrame::AllCanFrameErrors);
     canRawSocket->setReceiveOwnMessages(CanRawSocket::EnabledOwnMessages);
@@ -72,7 +73,6 @@ int main(int argc, char *argv[])
     canFrame.setDataLength(8);
 
     dataStream << canFrame;
-
 
     return coreApplication.exec();
 }

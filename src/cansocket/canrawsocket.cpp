@@ -38,6 +38,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#define CAN_RAW_READ_CHUNK_SIZE 1152 // 72 CAN Frames or 16 FD CAN Frames
+#define CAN_RAW_INITIAL_BUFFER_SIZE 18432 // x16
+
 #ifndef CAN_MTU
 #   define CAN_MTU sizeof(can_frame)
 #endif
@@ -159,7 +162,9 @@ bool CanRawFilterArray::operator ==(const CanRawFilterArray &rhs) const
 }
 
 CanRawSocket::CanRawSocket(QObject *parent)
-    : CanAbstractSocket(RawSocket, *new CanRawSocketPrivate, parent)
+    : CanAbstractSocket(RawSocket,
+                        *new CanRawSocketPrivate(CAN_RAW_READ_CHUNK_SIZE, CAN_RAW_INITIAL_BUFFER_SIZE),
+                        parent)
 {
 }
 
@@ -237,8 +242,9 @@ CanRawSocket::FlexibleDataRateFrames CanRawSocket::flexibleDataRateFrames()
     return socketOption(CanRawSocket::FlexibleDataRateFramesOption).value<CanRawSocket::FlexibleDataRateFrames>();
 }
 
-CanRawSocketPrivate::CanRawSocketPrivate()
-    : canFilter(1, CanRawFilter())
+CanRawSocketPrivate::CanRawSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize)
+    : CanAbstractSocketPrivate(readChunkSize, initialBufferSize)
+    , canFilter(1, CanRawFilter())
     , errorFilterMask(CanFrame::NoError)
     , loopback(CanRawSocket::EnabledLoopback)
     , receiveOwnMessages(CanRawSocket::DisabledOwnMessages)
@@ -457,7 +463,11 @@ QVariant CanRawSocketPrivate::socketOption(CanRawSocket::CanRawSocketOption opti
 
 qint64 CanRawSocketPrivate::readFromSocket(char *data, qint64 maxSize)
 {
-    size_t frameSize = msgSize();
+    size_t frameSize = CAN_MTU;
+#ifdef CANFD_MTU
+    if (flexibleDataRateFrames == CanRawSocket::EnabledFdFrames)
+        frameSize = CANFD_MTU;
+#endif
 
     qint64 readBytes = 0;
     int ret;
@@ -501,7 +511,12 @@ qint64 CanRawSocketPrivate::readFromSocket(char *data, qint64 maxSize)
 
 qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
 {
-    size_t frameSize;
+    size_t frameSize = CAN_MTU;
+#ifdef CANFD_MTU
+    if (flexibleDataRateFrames == CanRawSocket::EnabledFdFrames)
+        frameSize = CANFD_MTU;
+#endif
+    size_t bytesToWrite;
     quint8 res0;
     quint8 res1;
 
@@ -514,32 +529,30 @@ qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
         res0 = data[RES0_BYTE];
         res1 = data[RES1_BYTE];
 
+        if (maxSize - writtenBytes < static_cast<qint64>(frameSize))  {
+            //leftof size smaller then frame size
+            break;
+        }
+
         if (res0 == res0FromCanMtu(CAN_MTU)
                 && res1 == res1FromCanMtu(CAN_MTU)) {
             //standard can frame can be written in can and in canfd mode
-            frameSize = CAN_MTU;
+            bytesToWrite = CAN_MTU;
         }
 #ifdef CANFD_MTU
         else if (res0 == res0FromCanMtu(CANFD_MTU)
                  && res1 == res1FromCanMtu(CANFD_MTU)
                  && flexibleDataRateFrames == CanRawSocket::EnabledFdFrames) {
             //fd frame can only be written in fd mode
-            frameSize = CANFD_MTU;
+            bytesToWrite = CANFD_MTU;
         }
 #endif
         else {
             //data for reserved bytes is incorrect
-            break;
+            return -1;
         }
 
-
-        if (maxSize - writtenBytes < static_cast<qint64>(frameSize))  {
-            //leftof size smaller then frame size
-            break;
-        }
-
-
-        ret = ::write(descriptor, data, frameSize);
+        ret = ::write(descriptor, data, bytesToWrite);
 
         if (ret == 0) {
             break;
@@ -557,16 +570,6 @@ qint64  CanRawSocketPrivate::writeToSocket(const char *data, qint64 maxSize)
         writtenBytes += ret;
     }
     return writtenBytes;
-}
-
-int CanRawSocketPrivate::msgSize() const
-{
-#ifdef CANFD_MTU
-    if (flexibleDataRateFrames == CanRawSocket::EnabledFdFrames)
-        return CANFD_MTU;
-    else
-#endif
-        return CAN_MTU;
 }
 
 #include "moc_canrawsocket.cpp"

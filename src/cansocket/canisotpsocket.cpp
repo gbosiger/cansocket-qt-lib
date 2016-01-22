@@ -32,6 +32,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#define CAN_ISOTP_READ_CHUNK_SIZE = 4096 // max. data
+#define CAN_ISOTP_INITIAL_BUFFER_SIZE = 16384
+
 struct CanIsoTpOptionsPrivate {
     CanIsoTpOptionsPrivate()
         : flags(CAN_ISOTP_DEFAULT_FLAGS)
@@ -106,7 +109,9 @@ struct CanIsoTpLinkLayerOptionsPrivate {
 };
 
 CanIsoTpSocket::CanIsoTpSocket(QObject *parent)
-    : CanAbstractSocket(IsoTpSocket, *new CanIsoTpSocketPrivate, parent)
+    : CanAbstractSocket(IsoTpSocket,
+                        *new CanIsoTpSocketPrivate(CAN_ISOTP_READ_CHUNK_SIZE, CAN_ISOTP_INITIAL_BUFFER_SIZE),
+                        parent)
 {
 }
 

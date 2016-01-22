@@ -27,7 +27,7 @@ class CanIsoTpSocketPrivate : CanAbstractSocketPrivate
     Q_DECLARE_PUBLIC(CanIsoTpSocket)
 
 public:
-    CanIsoTpSocketPrivate();
+    CanIsoTpSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize);
     virtual ~CanIsoTpSocketPrivate();
 
     bool connectToInterface(const QString &interfaceName) Q_DECL_OVERRIDE;

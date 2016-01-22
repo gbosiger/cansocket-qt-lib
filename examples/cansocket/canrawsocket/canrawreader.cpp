@@ -18,11 +18,13 @@
 
 #include "canrawreader.h"
 #include <CanSocket/canframe.h>
+#include <QtCore/qdebug.h>
 
-CanRawReader::CanRawReader(CanRawSocket *canRawSocket, QObject *parent)
-    : QObject(parent)
-    , m_dataStream(canRawSocket)
+CanRawReader::CanRawReader(CanRawSocket *canRawSocket, QCoreApplication *coreApplication)
+    : QObject(coreApplication)
+    , m_coreApplication(coreApplication)
     , m_canRawSocket(canRawSocket)
+    , m_dataStream(canRawSocket)
     , m_standardOutput(stdout)
 {
     connect(m_canRawSocket, SIGNAL(readyRead()), SLOT(handleReadyRead()));
@@ -50,5 +52,5 @@ void CanRawReader::handleError(CanAbstractSocket::SocketError error)
 {
     Q_UNUSED(error)
     m_standardOutput << QObject::tr("An error while operating on interface %1, error: %2").arg(m_canRawSocket->interfaceName()).arg(m_canRawSocket->errorString()) << endl;
-    QCoreApplication::exit(1);
+    m_coreApplication->quit();
 }

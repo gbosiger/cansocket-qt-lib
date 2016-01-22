@@ -20,23 +20,29 @@
 #define CANRAWREADER_H
 
 #include <QObject>
-#include <CanSocket>
+#include <CanSocket/canrawsocket.h>
+#include <QCoreApplication>
 #include <QDataStream>
+#include <QTextStream>
 
 class CanRawReader : public QObject
 {
     Q_OBJECT
 public:
-    explicit CanRawReader(CanRawSocket *canRawSocket, QObject *parent = 0);
+    explicit CanRawReader(CanRawSocket *canRawSocket, QCoreApplication *coreApplication);
 
 public slots:
     void handleReadyRead();
     void handleStateChanged(CanAbstractSocket::SocketState);
     void handleError(CanAbstractSocket::SocketError);
 
+signals:
+    void error();
+
 private:
-    QDataStream m_dataStream;
+    QCoreApplication *m_coreApplication;
     CanRawSocket *m_canRawSocket;
+    QDataStream m_dataStream;
     QTextStream m_standardOutput;
 };
 

@@ -41,13 +41,11 @@ class CanAbstractSocketPrivate : public QIODevicePrivate
     Q_DECLARE_PUBLIC(CanAbstractSocket)
 
 public:
-    enum IoConstants {
-        ReadChunkSize = 1152, // = 16*72 ... 72 standard can frames or 16 FD can frames
-        InitialBufferSize = 18432
-    };
 
-    CanAbstractSocketPrivate();
+    CanAbstractSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize);
     virtual ~CanAbstractSocketPrivate();
+
+    const qint32 readChunkSize;
 
     static int timeoutValue(int msecs, int elapsed);
 
@@ -87,8 +85,6 @@ public:
 
     virtual qint64 readFromSocket(char *data, qint64 maxSize);
     virtual qint64 writeToSocket(const char *data, qint64 maxSize);
-
-    virtual int msgSize() const;
 
     qintptr descriptor;
 

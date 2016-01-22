@@ -53,7 +53,7 @@
  * \param parent
  */
 CanAbstractSocket::CanAbstractSocket(SocketType socketType, QObject *parent)
-    : QIODevice(*new CanAbstractSocketPrivate, parent)
+    : QIODevice(*new CanAbstractSocketPrivate(0, 0), parent)
 {
     setSocketType(socketType);
 }
@@ -233,11 +233,17 @@ bool CanAbstractSocket::waitForReadyRead(int msecs)
 bool CanAbstractSocket::waitForBytesWritten(int msecs)
 {
     Q_D(CanAbstractSocket);
+
+    if (socketState() == UnconnectedState)
+        return false;
+
     return d->waitForBytesWritten(msecs);
 }
 
 qint64 CanAbstractSocket::readData(char *data, qint64 maxSize)
 {
+    Q_UNUSED(data)
+    Q_UNUSED(maxSize)
     Q_D(CanAbstractSocket);
 
     if (d->readBufferMaxSize && !d->isReadNotificationEnabled())
@@ -378,9 +384,10 @@ private:
     CanAbstractSocketPrivate *dptr;
 };
 
-CanAbstractSocketPrivate::CanAbstractSocketPrivate()
-    : readBufferMaxSize(0)
-    , writeBuffer(InitialBufferSize)
+CanAbstractSocketPrivate::CanAbstractSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize)
+    : readChunkSize(readChunkSize)
+    , readBufferMaxSize(0)
+    , writeBuffer(initialBufferSize)
     , type(CanAbstractSocket::UnkownCanSocketType)
     , error(CanAbstractSocket::NoError)
     , state(CanAbstractSocket::UnconnectedState)
@@ -559,17 +566,14 @@ bool CanAbstractSocketPrivate::readNotification()
 {
     Q_Q(CanAbstractSocket);
 
-    int expectedDataSize = msgSize();
-
     // Always buffered, read data from the socket into the read buffer
     qint64 newBytes = buffer.size();
-    qint64 bytesToRead = ReadChunkSize;
+    qint64 bytesToRead = readChunkSize;
 
     if (readBufferMaxSize && bytesToRead > (readBufferMaxSize - buffer.size())) {
         bytesToRead = readBufferMaxSize - buffer.size();
-        if (bytesToRead < expectedDataSize) {
-            // Buffer is full. User must read data from the buffer
-            // before we can read more from the can socket.
+        if (bytesToRead == 0) {
+            setReadNotificationEnabled(false);
             return false;
         }
     }
@@ -578,6 +582,7 @@ bool CanAbstractSocketPrivate::readNotification()
     const qint64 readBytes = readFromSocket(ptr, bytesToRead);
 
     if (readBytes < 0) {
+        // error
         CanAbstractSocketErrorInfo error = getSystemError();
         if (error.errorCode != CanAbstractSocket::SocketResourceError)
             error.errorCode = CanAbstractSocket::ReadError;
@@ -587,13 +592,17 @@ bool CanAbstractSocketPrivate::readNotification()
         buffer.chop(bytesToRead);
         return false;
     }
-
-    buffer.chop(bytesToRead - qMax(readBytes, qint64(0)));
-
-    newBytes = buffer.size() - newBytes;
+    else if (bytesToRead == 0)
+        // If data could be read, but buffer was too small, disable the read notifier
+        setReadNotificationEnabled(false);
+    else {
+        // data was received
+        buffer.chop(bytesToRead - readBytes);
+        newBytes = buffer.size() - newBytes;
+    }
 
     // If read buffer is full, disable the read notifier.
-    if (readBufferMaxSize && buffer.size() > (readBufferMaxSize - expectedDataSize) )
+    if (readBufferMaxSize && buffer.size() == readBufferMaxSize)
         setReadNotificationEnabled(false);
 
     // only emit readyRead() when not recursing, and only if there is data available
@@ -722,10 +731,6 @@ bool CanAbstractSocketPrivate::waitForReadOrWrite(bool *selectForRead, bool *sel
     *selectForWrite = FD_ISSET(descriptor, &fdwrite);
 
     return true;
-}
-
-int CanAbstractSocketPrivate::msgSize() const {
-    return 0;
 }
 
 qint64 CanAbstractSocketPrivate::readFromSocket(char *data, qint64 maxSize)

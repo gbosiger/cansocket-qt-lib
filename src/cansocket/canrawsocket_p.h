@@ -27,7 +27,7 @@ class CanRawSocketPrivate : CanAbstractSocketPrivate
     Q_DECLARE_PUBLIC(CanRawSocket)
 
 public:
-    CanRawSocketPrivate();
+    CanRawSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize);
     virtual ~CanRawSocketPrivate();
 
     bool connectToInterface(const QString &interfaceName) Q_DECL_OVERRIDE;
@@ -37,8 +37,6 @@ public:
 
     qint64 readFromSocket(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
     qint64 writeToSocket(const char *data, qint64 maxSize) Q_DECL_OVERRIDE;
-
-   int msgSize() const Q_DECL_OVERRIDE;
 
    CanRawFilterArray canFilter;
    CanFrame::CanFrameErrors errorFilterMask;
