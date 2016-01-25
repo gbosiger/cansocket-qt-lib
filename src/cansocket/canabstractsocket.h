@@ -111,7 +111,8 @@ protected:
 
     inline void setSocketType(SocketType socketType);
     inline void setSocketState(SocketState socketState);
-    inline void setSocketError(SocketError socketError, QString error);
+
+    void setSocketError(SocketError socketError, QString error);
 
     CanAbstractSocket(SocketType socketType, CanAbstractSocketPrivate &dd, QObject *parent = Q_NULLPTR);
 

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     rawFilterArray.append(rawFilter);
 
     canRawSocket->connectToInterface(interfaceName);
-//    canRawSocket->setCanFilter(rawFilterArray);
+    canRawSocket->setCanFilter(rawFilterArray);
     canRawSocket->setFlexibleDataRateFrames(CanRawSocket::EnabledFdFrames);
     canRawSocket->setErrorFilterMask(CanFrame::AllCanFrameErrors);
     canRawSocket->setReceiveOwnMessages(CanRawSocket::EnabledOwnMessages);

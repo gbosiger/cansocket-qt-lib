@@ -27,7 +27,7 @@ class CanRawSocketPrivate : CanAbstractSocketPrivate
     Q_DECLARE_PUBLIC(CanRawSocket)
 
 public:
-    CanRawSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize);
+    CanRawSocketPrivate(qint32 readChunkSize, qint64 initialBufferSize);
     virtual ~CanRawSocketPrivate();
 
     bool connectToInterface(const QString &interfaceName) Q_DECL_OVERRIDE;

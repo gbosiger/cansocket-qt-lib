@@ -384,7 +384,7 @@ private:
     CanAbstractSocketPrivate *dptr;
 };
 
-CanAbstractSocketPrivate::CanAbstractSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize)
+CanAbstractSocketPrivate::CanAbstractSocketPrivate(qint32 readChunkSize, qint64 initialBufferSize)
     : readChunkSize(readChunkSize)
     , readBufferMaxSize(0)
     , writeBuffer(initialBufferSize)

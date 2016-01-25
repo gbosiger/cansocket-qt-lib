@@ -42,7 +42,7 @@ class CanAbstractSocketPrivate : public QIODevicePrivate
 
 public:
 
-    CanAbstractSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize);
+    CanAbstractSocketPrivate(qint32 readChunkSize, qint64 initialBufferSize);
     virtual ~CanAbstractSocketPrivate();
 
     const qint32 readChunkSize;

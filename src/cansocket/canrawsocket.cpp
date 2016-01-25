@@ -175,20 +175,12 @@ CanRawSocket::~CanRawSocket()
 void CanRawSocket::setSocketOption(CanRawSocket::CanRawSocketOption option, const QVariant &value)
 {
     Q_D(CanRawSocket);
-
-    if (!d->descriptor)
-        return;
-
     d->setSocketOption(option, value);
 }
 
 QVariant CanRawSocket::socketOption(CanRawSocket::CanRawSocketOption option)
 {
     Q_D(CanRawSocket);
-
-    if (!d->descriptor)
-        return QVariant();
-
     return d->socketOption(option);
 }
 
@@ -242,7 +234,7 @@ CanRawSocket::FlexibleDataRateFrames CanRawSocket::flexibleDataRateFrames()
     return socketOption(CanRawSocket::FlexibleDataRateFramesOption).value<CanRawSocket::FlexibleDataRateFrames>();
 }
 
-CanRawSocketPrivate::CanRawSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize)
+CanRawSocketPrivate::CanRawSocketPrivate(qint32 readChunkSize, qint64 initialBufferSize)
     : CanAbstractSocketPrivate(readChunkSize, initialBufferSize)
     , canFilter(1, CanRawFilter())
     , errorFilterMask(CanFrame::NoError)
@@ -286,16 +278,16 @@ bool CanRawSocketPrivate::connectToInterface(const QString &interfaceName)
         addr.can_ifindex = ifr.ifr_ifindex;
     }
 
-    if (::bind(descriptor, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
-        setError(getSystemError());
-        return false;
-    }
-
     if (!setSocketOption(CanRawSocket::CanFilterOption, QVariant::fromValue(canFilter))
             || !setSocketOption(CanRawSocket::ErrorFilterMaskOption, QVariant::fromValue(errorFilterMask))
             || !setSocketOption(CanRawSocket::LoopbackOption, QVariant::fromValue(loopback))
             || !setSocketOption(CanRawSocket::ReceiveOwnMessagesOption, QVariant::fromValue(receiveOwnMessages))
             || !setSocketOption(CanRawSocket::FlexibleDataRateFramesOption, QVariant::fromValue(flexibleDataRateFrames))) {
+        return false;
+    }
+
+    if (::bind(descriptor, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
+        setError(getSystemError());
         return false;
     }
 
@@ -440,12 +432,12 @@ QVariant CanRawSocketPrivate::socketOption(CanRawSocket::CanRawSocketOption opti
 {
     QVariant result;
 
-    switch(option) {
+    switch (option) {
     case CanRawSocket::CanFilterOption:
-        //TO-DO
+        result.setValue(canFilter);
         break;
     case CanRawSocket::ErrorFilterMaskOption:
-        //TO-DO
+        result.setValue(errorFilterMask);
         break;
     case CanRawSocket::LoopbackOption:
         result.setValue(loopback);
