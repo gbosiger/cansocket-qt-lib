@@ -19,9 +19,9 @@
 #ifndef CANISOTPSOCKET
 #define CANISOTPSOCKET
 
+#include <CanSocket/cansocketglobal.h>
 #include <CanSocket/canabstractsocket.h>
 #include <CanSocket/canframe.h>
-#include <QtCore/qvariant.h>
 
 class CanIsoTpSocketPrivate;
 struct CanIsoTpOptionsPrivate;
@@ -49,6 +49,7 @@ public:
     Q_DECLARE_FLAGS(IsoTpFlags, IsoTpFlag)
 
     CanIsoTpOptions();
+    CanIsoTpOptions(const CanIsoTpOptions &rhs);
     ~CanIsoTpOptions();
 
     void setIsoTpFlags(IsoTpFlags flags);
@@ -90,6 +91,7 @@ public:
     Q_ENUM(MinSepTimeCodeOption)
 
     CanIsoTpFlowControlOptions();
+    CanIsoTpFlowControlOptions(const CanIsoTpFlowControlOptions &rhs);
     ~CanIsoTpFlowControlOptions();
 
     void setBlockSize(quint8 size);
@@ -135,6 +137,7 @@ public:
     Q_ENUM(TxDataLengthOption)
 
     CanIsoTpLinkLayerOptions();
+    CanIsoTpLinkLayerOptions(const CanIsoTpLinkLayerOptions &rhs);
     ~CanIsoTpLinkLayerOptions();
 
     void setMaxDataTransferUnit(MtuOption mtu);
@@ -184,6 +187,8 @@ public:
     virtual ~CanIsoTpSocket();
 
     bool connectToInterface(const QString &interfaceName,
+                            OpenMode mode = QIODevice::ReadWrite) Q_DECL_OVERRIDE;
+    bool connectToInterface(const QString &interfaceName,
                        uint txId,
                        uint rxId,
                        OpenMode mode);
@@ -225,7 +230,6 @@ private:
     Q_DISABLE_COPY(CanIsoTpSocket)
     Q_DECLARE_PRIVATE(CanIsoTpSocket)
 };
-
 
 #endif // CANISOTPSOCKET
 

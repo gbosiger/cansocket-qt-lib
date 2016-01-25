@@ -23,8 +23,6 @@
 #include "canframe_p.h"
 
 #include <QtCore/qshareddata.h>
-#include <QtCore/qelapsedtimer.h>
-#include <QtCore/qsocketnotifier.h>
 #include <QtCore/qmap.h>
 
 #include <sys/socket.h>

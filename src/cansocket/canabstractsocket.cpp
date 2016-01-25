@@ -505,8 +505,10 @@ void CanAbstractSocketPrivate::setError(const CanAbstractSocketErrorInfo &errorI
     emit q->error(error);
 }
 
+#include <QtCore/qdebug.h>
 qint64 CanAbstractSocketPrivate::writeData(const char *data, qint64 maxSize)
 {
+    qDebug() << QByteArray(data, maxSize).toHex();
     ::memcpy(writeBuffer.reserve(maxSize), data, maxSize);
     if (!writeBuffer.isEmpty() && !isWriteNotificationEnabled())
         setWriteNotificationEnabled(true);

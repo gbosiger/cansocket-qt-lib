@@ -16,9 +16,9 @@
 * along with this library. If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#include "canisotpsocket.h"
 #include "canabstractsocket.h"
 #include "canabstractsocket_p.h"
-#include "canisotpsocket.h"
 #include "canisotpsocket_p.h"
 
 #include <private/qcore_unix_p.h>
@@ -48,6 +48,16 @@ struct CanIsoTpOptionsPrivate {
     {
     }
 
+    CanIsoTpOptionsPrivate(const CanIsoTpOptionsPrivate &rhs)
+        : flags(rhs.flags)
+        , frameTxTime(rhs.frameTxTime)
+        , extAddress(rhs.extAddress)
+        , txPadContent(rhs.txPadContent)
+        , rxPadContent(rhs.rxPadContent)
+        , rxExtAddress(rhs.rxExtAddress)
+    {
+    }
+
     inline bool operator ==(const CanIsoTpOptionsPrivate &rhs) const
     {
         return (flags == rhs.flags
@@ -74,6 +84,13 @@ struct CanIsoTpFlowControlOptionsPrivate {
     {
     }
 
+    CanIsoTpFlowControlOptionsPrivate(const CanIsoTpFlowControlOptionsPrivate &rhs)
+        : blockSize(rhs.blockSize)
+        , stMin(rhs.stMin)
+        , wftMax(rhs.wftMax)
+    {
+    }
+
     inline bool operator ==(const CanIsoTpFlowControlOptionsPrivate &rhs) const
     {
         return (blockSize == rhs.blockSize
@@ -94,6 +111,13 @@ struct CanIsoTpLinkLayerOptionsPrivate {
     {
     }
 
+    CanIsoTpLinkLayerOptionsPrivate(const CanIsoTpLinkLayerOptionsPrivate &rhs)
+        : mtu(rhs.mtu)
+        , txDlen(rhs.txDlen)
+        , txFdFlags(rhs.txFdFlags)
+    {
+    }
+
     inline bool operator ==(const CanIsoTpLinkLayerOptionsPrivate &rhs) const {
         return (mtu == rhs.mtu
                 && txDlen == rhs.txDlen
@@ -108,6 +132,11 @@ struct CanIsoTpLinkLayerOptionsPrivate {
 
 CanIsoTpOptions::CanIsoTpOptions()
     : d(new CanIsoTpOptionsPrivate)
+{
+}
+
+CanIsoTpOptions::CanIsoTpOptions(const CanIsoTpOptions &rhs)
+    : d(new CanIsoTpOptionsPrivate(*rhs.d))
 {
 }
 
@@ -182,6 +211,11 @@ CanIsoTpFlowControlOptions::CanIsoTpFlowControlOptions()
 {
 }
 
+CanIsoTpFlowControlOptions::CanIsoTpFlowControlOptions(const CanIsoTpFlowControlOptions &rhs)
+    : d(new CanIsoTpFlowControlOptionsPrivate(*rhs.d))
+{
+}
+
 CanIsoTpFlowControlOptions::~CanIsoTpFlowControlOptions()
 {
     delete d;
@@ -229,6 +263,11 @@ bool CanIsoTpFlowControlOptions::operator ==(const CanIsoTpFlowControlOptions &r
 
 CanIsoTpLinkLayerOptions::CanIsoTpLinkLayerOptions()
     : d(new CanIsoTpLinkLayerOptionsPrivate)
+{
+}
+
+CanIsoTpLinkLayerOptions::CanIsoTpLinkLayerOptions(const CanIsoTpLinkLayerOptions &rhs)
+    : d(new CanIsoTpLinkLayerOptionsPrivate(*rhs.d))
 {
 }
 
@@ -286,6 +325,11 @@ CanIsoTpSocket::CanIsoTpSocket(QObject *parent)
 
 CanIsoTpSocket::~CanIsoTpSocket()
 {
+}
+
+bool CanIsoTpSocket::connectToInterface(const QString &interfaceName, OpenMode mode)
+{
+    return CanAbstractSocket::connectToInterface(interfaceName, mode);
 }
 
 bool CanIsoTpSocket::connectToInterface(const QString &interfaceName, uint txId, uint rxId, OpenMode mode)
