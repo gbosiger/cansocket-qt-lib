@@ -54,8 +54,8 @@ public:
     void setIsoTpFlags(IsoTpFlags flags);
     IsoTpFlags isoTpFlags() const;
 
-    void setFrameTxTime(uint nsecs);
-    uint frameTxTime() const;
+    void setFrameTxTime(quint32 nsecs);
+    quint32 frameTxTime() const;
 
     void setExtendedAddress(quint8 address);
     quint8 extendedAddres() const;
@@ -65,6 +65,9 @@ public:
 
     void setRxPaddingByte(quint8 content);
     quint8 rxPaddingByte() const;
+
+    bool operator ==(const CanIsoTpOptions &rhs) const;
+    bool operator !=(const CanIsoTpOptions &rhs) const { return !operator==(rhs); }
 
 private:
     friend class CanIsoTpSocketPrivate;
@@ -98,9 +101,11 @@ public:
     void setWaitFramesMaxNumber(quint8 waitFramesMaxNumber);
     quint8 waitFramesMaxNumber() const;
 
+    bool operator ==(const CanIsoTpFlowControlOptions &rhs) const;
+    bool operator !=(const CanIsoTpFlowControlOptions &rhs) const { return !operator==(rhs); }
+
 private:
     friend class CanIsoTpSocketPrivate;
-
     CanIsoTpFlowControlOptionsPrivate *d;
 };
 Q_DECLARE_METATYPE(CanIsoTpFlowControlOptions)
@@ -127,7 +132,7 @@ public:
         TxDlen48 = 48,
         TxDlen64 = 64
     };
-    Q_ENUM(TxDataLength)
+    Q_ENUM(TxDataLengthOption)
 
     CanIsoTpLinkLayerOptions();
     ~CanIsoTpLinkLayerOptions();
@@ -139,11 +144,14 @@ public:
     TxDataLengthOption txDataLength() const;
 
     void setTxFdFrameFlags(CanFrame::CanFdFrameFlags flags);
-    CanFrame::CanFdFrameFlags txFdFrameFlags();
+    CanFrame::CanFdFrameFlags txFdFrameFlags() const;
+
+    bool operator ==(const CanIsoTpLinkLayerOptions &rhs) const;
+    bool operator !=(const CanIsoTpLinkLayerOptions &rhs) const { return !operator==(rhs); }
 
 private:
     friend class CanIsoTpSocketPrivate;
-    CanIsoTpLinkLayerOptions *d;
+    CanIsoTpLinkLayerOptionsPrivate *d;
 };
 Q_DECLARE_METATYPE(CanIsoTpLinkLayerOptions)
 
@@ -183,7 +191,10 @@ public:
     void setSocketOption(CanIsoTpSocketOption option, const QVariant &value);
     QVariant socketOption(CanIsoTpSocketOption option);
 
+    bool setTxId(uint id);
     uint txId();
+
+    bool setRxId(uint id);
     uint rxId();
 
     void setIsoTpOptions(const CanIsoTpOptions &options);

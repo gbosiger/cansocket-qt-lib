@@ -27,7 +27,7 @@ class CanIsoTpSocketPrivate : CanAbstractSocketPrivate
     Q_DECLARE_PUBLIC(CanIsoTpSocket)
 
 public:
-    CanIsoTpSocketPrivate(quint32 readChunkSize, quint64 initialBufferSize);
+    CanIsoTpSocketPrivate(qint32 readChunkSize, qint64 initialBufferSize);
     virtual ~CanIsoTpSocketPrivate();
 
     bool connectToInterface(const QString &interfaceName) Q_DECL_OVERRIDE;
@@ -38,13 +38,13 @@ public:
     qint64 readFromSocket(char *data, qint64 maxSize) Q_DECL_OVERRIDE;
     qint64 writeToSocket(const char *data, qint64 maxSize) Q_DECL_OVERRIDE;
 
-   int msgSize() const Q_DECL_OVERRIDE;
-
    quint32 txId;
    quint32 rxId;
-   CanIsoTpOptions tpOpt;
-   CanIsoTpFlowControlOptions flowCtrlOpt;
-   CanIsoTpLinkLayerOptions llOpt;
+   CanIsoTpOptions isoTpOptions;
+   CanIsoTpFlowControlOptions flowControlOptions;
+   quint32 txMinSepTime;
+   quint32 rxMinSepTime;
+   CanIsoTpLinkLayerOptions linkLayerOptions;
 };
 
 #endif // CANISOTPSOCKET_P_H
