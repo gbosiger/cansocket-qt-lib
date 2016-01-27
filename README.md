@@ -91,6 +91,8 @@ Code snippet of the example:
     canIsoTpSocket->write(dataToSend, sizeof(dataToSend) - 1);
 ```
 
+Isotpsend and isotprecv from can-utils can be used for testing when the example is executed.
+
 ## Copyright
 
 Copyrgiht © 2016 Georgije Bosiger 
