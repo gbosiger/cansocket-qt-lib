@@ -9,7 +9,7 @@ Goals of this library are:
 * having a robust library that could be used in embedded Linux devices, and
 * organization and implementation of the project by following standards of Qt modules.
 
-However, only RAW CAN protocol is currently supported, but the library is designed in a way that makes implementation of other CAN protocols as easy as possible. 
+However, only RAW and ISO-TP CAN protocols are currently supported, but the library is designed in a way that makes implementation of other CAN protocols as easy as possible. 
 
 Project is in transition from pre-alpha to alpha stage. All functionalities of RAW CAN protocol are already supported. A main focus is now on unit testing, before any new protocols will be added to the project. 
 
@@ -19,7 +19,7 @@ Qt 5.5.1 or higher is required, although with small changes also odler Qt5 versi
 
 More project documentation and information will hopefully be available soon. In case of any questions or desire to participate do not hesitate to contact me.
 
-## Example 
+## Example - CAN RAW
 
 An example for RAW CAN protocol is avaliable in the examples directory. To run it, you need to setup virtual can interface first:
 ```
@@ -71,6 +71,25 @@ Code snippet of the example for quick demonstaration:
     dataStream << canFrame;
 ```
 
+## Exmple - CAN ISO-TP
+
+ISO-TP is also supported, but the module must be build or sources added to the kernel in case of custom embedded systems. You can get them from https://github.com/hartkopp/can-isotp-modules. When building this library, a test is performed that looks for a header at linux/can/isotp.h location. If file is not found, CanIsoTpScket will be skipped. You need to add an include dir appropriately when building, or copy files in one of the standrad locations.
+
+Note that CanIsoTpSocket was only tested within the included example and it receives and sends data as expected. More (unit) tests will need to be performed.
+
+Code snippet of the example:
+```
+    QString interfaceName = "vcan0";
+    char dataToSend[] = "\x11\x22\x33\x44\x55\xAA\xBB\xCC\x11\x22\x33\x55\xAA\xBB\xCC\xDD";
+
+    CanIsoTpSocket *canIsoTpSocket = new CanIsoTpSocket(&coreApplication);
+    new CanIsoTpReader(canIsoTpSocket, &coreApplication);
+
+    canIsoTpSocket->setTxId(0x0A);
+    canIsoTpSocket->setRxId(0x01);
+    canIsoTpSocket->connectToInterface(interfaceName);
+    canIsoTpSocket->write(dataToSend, sizeof(dataToSend) - 1);
+```
 
 ## Copyright
 
