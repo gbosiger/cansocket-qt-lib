@@ -9,9 +9,7 @@ Goals of this library are:
 * having a robust library that could be used in embedded Linux devices, and
 * organization and implementation of the project by following standards of Qt modules.
 
-However, only RAW and ISO-TP CAN protocols are currently supported, but the library is designed in a way that makes implementation of other CAN protocols as easy as possible. 
-
-Project is in transition from pre-alpha to alpha stage. All functionalities of RAW CAN protocol are already supported. A main focus is now on unit testing, before any new protocols will be added to the project. 
+Project is in transition from pre-alpha to alpha stage. RAW and ISO-TP protocols are already supported. A main focus is now on unit testing. 
 
 It must be also said that a QSerialBus module (https://github.com/qtproject/qtserialbus) with QtCanBus classes is released under Qt (as a Technology Preview). The cansocket-qt-lib project was developed independently and its main design was conceived before the public release of QSerialBus module, thus API and the implementation are not the same. In fact credit goes to developers of QtNetwork (https://github.com/qtproject/qtbase/tree/dev/src/network/socket) and QtSerialPort (https://github.com/qtproject/qtserialport) modules, which were used for reference of how to implement a new IO device in Qt properly.
 
