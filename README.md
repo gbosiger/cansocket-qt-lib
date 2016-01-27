@@ -73,9 +73,11 @@ Code snippet of the example for quick demonstaration:
 
 ## Exmple - CAN ISO-TP
 
-ISO-TP is also supported, but the module must be build or sources added to the kernel in case of custom embedded systems. You can get them from https://github.com/hartkopp/can-isotp-modules. When building this library, a test is performed that looks for a header at linux/can/isotp.h location. If file is not found, CanIsoTpScket will be skipped. You need to add an include dir appropriately when building, or copy files in one of the standrad locations.
+ISO-TP is also supported, but the module must be build or sources added to the kernel in case of custom embedded systems. You can get them from https://github.com/hartkopp/can-isotp-modules. When building this library, a test is performed that looks for a header at linux/can/isotp.h location. If file is not found, CanIsoTpSocket will be skipped. You need to add an include dir appropriately when building, or copy files in one of the standrad locations.
 
 Note that CanIsoTpSocket was only tested within the included example and it receives and sends data as expected. More (unit) tests will need to be performed.
+
+Writing and reading is even more straightforward than in case of RAW protocol as all frames are generated in the kernel space and only data needs to be written or read from the (ISO-TP) socket.   
 
 Code snippet of the example:
 ```
