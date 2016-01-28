@@ -95,7 +95,7 @@ Isotpsend and isotprecv from can-utils can be used for testing when the example 
 
 ## Copyright
 
-Copyrgiht © 2016 Georgije Bosiger 
+Copyright © 2016 Georgije Bosiger 
 
 This project may be used under the terms of the GNU Lesser General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE.md.
 
