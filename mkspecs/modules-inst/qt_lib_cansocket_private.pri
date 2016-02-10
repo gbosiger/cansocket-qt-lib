@@ -1,0 +1,9 @@
+QT.cansocket_private.VERSION = 0.1.0
+QT.cansocket_private.MAJOR_VERSION = 0
+QT.cansocket_private.MINOR_VERSION = 1
+QT.cansocket_private.PATCH_VERSION = 0
+QT.cansocket_private.name = CanSocket
+QT.cansocket_private.libs = $$QT_MODULE_LIB_BASE
+QT.cansocket_private.includes = $$QT_MODULE_INCLUDE_BASE/CanSocket/0.1.0 $$QT_MODULE_INCLUDE_BASE/CanSocket/0.1.0/CanSocket
+QT.cansocket_private.depends = cansocket
+QT.cansocket_private.module_config = internal_module no_link

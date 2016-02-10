@@ -435,7 +435,7 @@ void CanAbstractSocketPrivate::disconnectFromInterface()
         writeNotifier = Q_NULLPTR;
     }
 
-    if (descriptor && ::close(descriptor) == -1)
+    if (descriptor > 0 && ::close(descriptor) == -1)
         setError(getSystemError());
 
     interfaceName.clear();
