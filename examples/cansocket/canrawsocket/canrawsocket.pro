@@ -1,12 +1,5 @@
 QT += core cansocket
 
-DEPENDPATH += $$PWD/../../../src/cansocket/
-INCLUDEPATH += $$PWD/../../../include/CanSocket
-LIBS += -L$$PWD/../../../lib/ -lCanSocket
-
-CONFIG += console
-CONFIG -= app_bundle
-
 TARGET = canrawsocket
 TEMPLATE = app
 
@@ -15,3 +8,8 @@ HEADERS += \
 
 SOURCES += main.cpp \
     canrawreader.cpp
+
+
+target.path = $$[QT_INSTALL_EXAMPLES]/cansocket/canrawsocket
+INSTALLS += target
+

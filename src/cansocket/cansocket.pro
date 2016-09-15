@@ -1,8 +1,8 @@
 TARGET = CanSocket
 QT = core-private
 
-load(qt_module)
-
 include($$PWD/cansocket-lib.pri)
+
+load(qt_module)
 
 PRECOMPILED_HEADER =
