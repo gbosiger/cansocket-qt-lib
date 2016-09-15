@@ -1,4 +1,0 @@
-executing config test isotp
-+ cd /home/georgije/Projects/cansocket-qt-lib/config.tests/isotp && /home/georgije/Projects/SECO/uSBC_iMX6/build-tools/qt_arm_gnueabi_5.5.1/bin/qmake -spec /home/georgije/Projects/SECO/uSBC_iMX6/build-tools/qt_arm_gnueabi_5.5.1/mkspecs/devices/linux-imx6-g++ "CONFIG -= qt debug_and_release app_bundle lib_bundle" /home/georgije/Projects/cansocket-qt-lib/config.tests/isotp
-Project ERROR: isotp development package not found
-test isotp FAILED
