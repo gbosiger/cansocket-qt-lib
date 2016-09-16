@@ -1,8 +1,4 @@
-TEMPLATE = app
-
-CONFIG += link_pkgconfig
-PKGCONFIG += isotp
-
-TARGET = isotp
+CONFIG -= qt
+CONFIG += console
 
 SOURCES += main.cpp
